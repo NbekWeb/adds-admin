@@ -1,0 +1,37 @@
+$xs: 375px;
+$sm: 425px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1200px;
+
+
+
+@mixin responsive-xs{
+  @media (min-width: $xs){
+    @content;
+  }
+}
+
+@mixin responsive-sm {
+  @media (min-width: $sm) {
+    @content;
+  }
+}
+
+@mixin responsive-md{
+  @media (min-width: $md){
+    @content;
+  }
+}
+
+@mixin responsive-lg{
+  @media (min-width: $lg){
+    @content;
+  }
+}
+@mixin responsive-xl{
+  @media (min-width: $xl){
+    @content;
+  }
+}
+
