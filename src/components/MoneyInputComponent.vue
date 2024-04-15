@@ -3,7 +3,7 @@ import { ref, watch } from 'vue'
 
 const model = defineModel('value')
 
-const props = defineProps({
+const { placeholder } = defineProps({
   placeholder: String
 })
 const modelValue = ref(null)
