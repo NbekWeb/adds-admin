@@ -27,29 +27,29 @@ const currentPage = computed(() =>
 const columns = ref([
   {
     title: 'INDEX',
-    tabIndex: 'id',
+    dataIndex: 'id',
     key: 'id',
     width: 40
   },
   {
     title: 'NAME',
-    tabIndex: 'name',
+    dataIndex: 'name',
     key: 'name'
   },
   {
     title: 'DESCRIPTION',
-    tabIndex: 'description',
+    dataIndex: 'description',
     key: 'description',
     width: 300
   },
   {
     title: 'CATEGORY',
-    tabIndex: 'category',
+    dataIndex: 'category',
     key: 'category'
   },
   {
     title: 'STATUS',
-    tabIndex: 'status',
+    dataIndex: 'status',
     key: 'status'
   },
   {
@@ -100,9 +100,7 @@ function handleChangeStatus(id, status) {
         <template v-if="column.key === 'id'">
           {{ tableIndex(index, totalElements, currentPage - 1, size) }}
         </template>
-        <template v-if="column.key === 'name'">
-          {{ record.name }}
-        </template>
+
         <template v-if="column.key === 'description'">
           <a-popover title="Description">
             <template #content>

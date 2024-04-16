@@ -1,25 +1,61 @@
 <script setup>
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import useBoard from '@/store/board.pinia.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import BoardTableComponent from '@/pages/dashboard/board/components/BoardTableComponent.vue'
 import { storeToRefs } from 'pinia'
+import useCore from '@/store/core.pinia.js'
+import useBoardCategory from '@/store/board-category.pinia.js'
 
 const route = useRoute()
+const router = useRouter()
 
+const corePinia = useCore()
 const boardPinia = useBoard()
+const boardCategoryPinia = useBoardCategory()
 
+const { loadingUrl } = storeToRefs(corePinia)
 const { statuses } = storeToRefs(boardPinia)
+const { categories } = storeToRefs(boardCategoryPinia)
 
 const currentPage = computed(() =>
   route.query.page ? parseInt(route.query.page, 10) : 1
 )
+const category = ref(null)
+const status = ref(null)
+const search = ref(null)
 
+const timeout = ref()
+
+function handleChangeFilter() {
+  router.push({
+    query: {
+      category: category.value,
+      status: status.value,
+      search: search.value
+    }
+  })
+  boardPinia.getAllBoards(
+    currentPage.value - 1,
+    search.value,
+    status.value,
+    category.value
+  )
+}
+function handleSearch() {
+  if (timeout.value) {
+    clearTimeout(timeout.value)
+  }
+  timeout.value = setTimeout(() => {
+    handleChangeFilter()
+  }, 500)
+}
 onMounted(() => {
   boardPinia.getAllBoards(currentPage.value - 1)
   boardPinia.getAllBoardStatus()
+  boardCategoryPinia.getAllBoardCategories()
 })
 </script>
 
@@ -27,11 +63,38 @@ onMounted(() => {
   <page-header-component :title="$t('DashboardBoardListView')">
     <template #actions>
       <a-space>
-        <a-input placeholder="Kanalni izlash..." />
-        <a-select placeholder="Status" class="select" allow-clear>
-          <a-select-option value="ACTIVE"> Faol </a-select-option>
-        </a-select>
-        <a-select placeholder="Status" class="select" allow-clear>
+        <a-input
+          placeholder="Kanalni izlash..."
+          v-model:value="search"
+          allow-clear
+          @keydown="handleSearch"
+        />
+        <a-tree-select
+          v-model:value="category"
+          class="board-category-filter select"
+          :loading="loadingUrl.has('board/category/all')"
+          :dropdown-style="{
+            maxHeight: '1000px',
+            overflow: 'auto'
+          }"
+          :placeholder="$t('SELECT_CATEGORY')"
+          size="middle"
+          allow-clear
+          tree-default-expand-all
+          :tree-data-simple-mode="[categories]"
+          :tree-data="categories"
+          tree-node-filter-prop="label"
+          @change="handleChangeFilter"
+        >
+        </a-tree-select>
+
+        <a-select
+          @change="handleChangeFilter"
+          v-model:value="status"
+          placeholder="Status"
+          class="select"
+          allow-clear
+        >
           <a-select-option v-for="item in statuses" :value="item.boardStatus">
             {{ item.localName }}
           </a-select-option>

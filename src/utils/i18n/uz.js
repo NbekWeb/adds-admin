@@ -42,6 +42,9 @@ const uz = {
   BOARD_TIME_CONFIGURATIONS: 'Time configurations',
   ADMINISTRATOR: 'Administrator',
 
+  // languages{
+  UZBEK: "O'zbek",
+  RUSSIAN: 'Rus',
   //   buttons
   YES: 'Ha',
   NO: "Yo'q",
@@ -59,6 +62,7 @@ const uz = {
   ADD_NEW_LINKED_BUTTON: "Yangi tugma qo'shish",
   CREATE_AN_ORDER: "E'lon berish",
   //   labels
+  CATEGORY_CREATE: "Kategoriya qo'shish",
   POST_LIVE_TIME: "E'lonni kanalda turish muddati",
   POST_PIN_TIME: "E'lonni pinda turish muddati",
   POST_TOP_TIME: "E'lonni topda turish muddati",
@@ -87,6 +91,7 @@ const uz = {
   LAST_NAME: 'Familiya',
   ROLE: 'Rol',
   ACTIONS: 'Amallar',
+  ORDER_NUMBER: 'Tartibi',
   CHANNEL_LINK: 'Kanal havolasi',
   CHANNEL_NAME: 'Kanal nomi',
   RATE_NAME: "Ta'rif nomi",

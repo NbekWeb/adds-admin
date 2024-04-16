@@ -52,6 +52,23 @@ const useUser = defineStore('user', {
         .finally(() => {
           core.loadingUrl.delete('user/update')
         })
+    },
+    deleteUser(id, callback) {
+      const core = useCore()
+      core.loadingUrl.add(`user/delete/${id}`)
+      api({
+        url: `user/${id}`,
+        method: 'DELETE'
+      })
+        .then(() => {
+          callback()
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete(`user/delete/${id}`)
+        })
     }
   }
 })

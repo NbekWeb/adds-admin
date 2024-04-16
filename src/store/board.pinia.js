@@ -16,7 +16,7 @@ const useBoard = defineStore('board', {
       core.loadingUrl.add('board/get/all')
       api({
         url: 'board/dev',
-        query: {
+        params: {
           page: page,
           size: this.size,
           categoryId: category,

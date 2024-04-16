@@ -24,10 +24,11 @@ const { loadingUrl } = storeToRefs(corePinia)
 
 const columns = reactive([
   {
-    title: 'No',
+    title: 'INDEX',
     dataIndex: 'id',
     key: 'id',
-    width: 10
+    width: 40,
+    align: 'center'
   },
   {
     title: 'F_I_O',
@@ -71,6 +72,11 @@ function handleTableChange(pag) {
   userPinia.getAllUsers(pag.current - 1)
 }
 
+function deleteUserById(id) {
+  userPinia.deleteUser(id, () => {
+    userPinia.getAllUsers(currentPage.value - 1)
+  })
+}
 onMounted(() => {
   userPinia.getAllUsers(currentPage.value - 1)
 })
@@ -93,6 +99,7 @@ onMounted(() => {
       :pagination="totalPages > 1 ? pagination : false"
       row-key="username"
       size="middle"
+      :scroll="{ y: 'calc(100vh - 250px)', x: 'max-content' }"
       class="table-custom-class"
     >
       <template #headerCell="{ column }">
@@ -109,7 +116,14 @@ onMounted(() => {
                 <IconEdit />
               </template>
             </a-button>
-            <a-button class="btn" type="primary" size="middle" danger>
+            <a-button
+              :loading="loadingUrl.has(`user/delete/${record.id}`)"
+              @click="deleteUserById(record.id)"
+              class="btn"
+              type="primary"
+              size="middle"
+              danger
+            >
               <template #icon>
                 <IconTrash />
               </template>
@@ -120,8 +134,4 @@ onMounted(() => {
     </a-table>
   </loader-component>
 </template>
-<style lang="scss">
-.table-custom-class {
-  height: 93% !important;
-}
-</style>
+<style lang="scss"></style>

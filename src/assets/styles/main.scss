@@ -111,7 +111,7 @@ a {
       .ant-table {
         height: 100%;
         overflow: auto;
-
+        .ant-table-body{
           &::-webkit-scrollbar {
             width: 5px;
           }
@@ -132,6 +132,8 @@ a {
           &::-webkit-scrollbar-thumb:hover {
             background: $primary;
           }
+        }
+
       }
       .ant-pagination {
         margin-bottom: 0;
