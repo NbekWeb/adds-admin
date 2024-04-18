@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -12,6 +12,7 @@ import IconEdit from '@/components/icons/IconEdit.vue'
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import UserFormComponent from '@/pages/dashboard/users/components/UserFormComponent.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -19,8 +20,8 @@ const router = useRouter()
 const corePinia = useCore()
 const userPinia = useUser()
 
+const { loadingUrl, visibleDrawer } = storeToRefs(corePinia)
 const { users, totalElements, totalPages, size } = storeToRefs(userPinia)
-const { loadingUrl } = storeToRefs(corePinia)
 
 const columns = reactive([
   {
@@ -52,6 +53,7 @@ const columns = reactive([
     align: 'center'
   }
 ])
+const userId = ref(null)
 
 const currentPage = computed(() =>
   route.query.page ? parseInt(route.query.page, 10) : 1
@@ -77,6 +79,12 @@ function deleteUserById(id) {
     userPinia.getAllUsers(currentPage.value - 1)
   })
 }
+
+function handleChangeUser(id) {
+  visibleDrawer.value.add('user/form')
+  userId.value = id
+  userPinia.getUserById(id)
+}
 onMounted(() => {
   userPinia.getAllUsers(currentPage.value - 1)
 })
@@ -85,11 +93,16 @@ onMounted(() => {
 <template>
   <page-header-component :title="$t('DashboardUsersListView')">
     <template #actions>
-      <a-button type="primary" class="btn">
+      <a-button
+        type="primary"
+        class="btn"
+        @click="visibleDrawer.add('user/form')"
+      >
         <IconPlus /> {{ $t('ADD') }}
       </a-button>
     </template>
   </page-header-component>
+  <user-form-component v-model:id="userId" />
   <loader-component loading-url="user/get/all">
     <a-table
       @change="handleTableChange"
@@ -111,7 +124,12 @@ onMounted(() => {
         </template>
         <template v-if="column.key === 'action'">
           <a-space>
-            <a-button class="btn" type="primary" size="middle">
+            <a-button
+              class="btn"
+              type="primary"
+              size="middle"
+              @click="handleChangeUser(record.id)"
+            >
               <template #icon>
                 <IconEdit />
               </template>

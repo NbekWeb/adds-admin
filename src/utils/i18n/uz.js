@@ -62,6 +62,8 @@ const uz = {
   ADD_NEW_LINKED_BUTTON: "Yangi tugma qo'shish",
   CREATE_AN_ORDER: "E'lon berish",
   //   labels
+  PASSWORD: 'Parol',
+  USERNAME: 'Foydalanuvchi nomi',
   DATE: 'Sana',
   CUSTOMER: 'Mijoz',
   CHANNELS_NUMBER: 'Kanallar soni',
@@ -131,6 +133,10 @@ const uz = {
   APPROVED: 'Tasdiqlangan',
   STARTED: 'Boshlangan',
   FINISHED: 'Bajarilgan',
+  APPROVE: 'Tasdiqlash',
+  REJECTED: 'Rad qilingan',
+  REJECT: 'Rad qilish',
+  BOARD_OWNER_APPROVED: 'Kanal egasi tasdiqlagan',
   // descriptions
   LOGIN_PAGE_DESCRIPTION: 'Moderator',
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
