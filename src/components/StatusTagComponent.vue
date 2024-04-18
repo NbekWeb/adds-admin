@@ -12,25 +12,9 @@ const statusIcon = reactive({
   PENDING: '🕒',
   STARTED: '💼',
   FINISHED: '✅',
-  CANCELED: '🚫'
+  CANCELED: '🚫',
+  REJECTED: '🚫'
 })
-const statusTag = () => {
-  if (status === 'CREATED') {
-    return 'magenta'
-  } else if (status === 'PENDING') {
-    return 'processing'
-  } else if (status === 'APPROVED') {
-    return 'lime'
-  } else if (status === 'CANCELED') {
-    return 'error'
-  } else if (status === 'FINISHED') {
-    return 'success'
-  } else if (status === 'STARTED') {
-    return 'warning'
-  } else {
-    return ''
-  }
-}
 </script>
 
 <template>
@@ -42,7 +26,7 @@ const statusTag = () => {
           ? 'processing'
           : status === 'APPROVED'
             ? 'lime'
-            : status === 'CANCELED'
+            : status === 'CANCELED' || status === 'REJECTED'
               ? 'error'
               : status === 'FINISHED'
                 ? 'success'

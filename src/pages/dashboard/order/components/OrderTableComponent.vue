@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { tableIndex } from '@/composables/index.js'
 import dayjs from 'dayjs'
@@ -7,6 +7,8 @@ import amount from '@/composables/amount.js'
 import { useRoute, useRouter } from 'vue-router'
 import useOrder from '@/store/order.pinia.js'
 import useCore from '@/store/core.pinia.js'
+import BoardStatusComponent from '@/pages/dashboard/board/components/BoardStatusComponent.vue'
+import LoaderComponent from '@/components/LoaderComponent.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -17,12 +19,6 @@ const orderPinia = useOrder()
 const currentPage = computed(() =>
   route.query.page ? parseInt(route.query.page, 10) : 1
 )
-const pagination = computed(() => ({
-  total: totalElements.value,
-  current: currentPage.value,
-  pageSize: size.value
-}))
-
 const columns = reactive([
   {
     title: 'INDEX',
@@ -67,6 +63,22 @@ const columns = reactive([
     align: 'center'
   }
 ])
+const statuses = ref([
+  {
+    label: 'APPROVE',
+    value: 'APPROVED'
+  },
+  {
+    label: 'REJECT',
+    value: 'REJECTED'
+  }
+])
+
+const pagination = computed(() => ({
+  total: totalElements.value,
+  current: currentPage.value,
+  pageSize: size.value
+}))
 
 const { visibleDrawer } = storeToRefs(corePinia)
 const { orders, totalElements, size, totalPages } = storeToRefs(orderPinia)
@@ -77,7 +89,12 @@ function handleTableChange(pag) {
       page: pag.current
     }
   })
-  orderPinia.getAllOrders(currentPage.value - 1)
+  orderPinia.getAllOrders(pag.current - 1)
+}
+function handleChangeStatus(id, status) {
+  orderPinia.changeOrderStatus(id, status, () => {
+    orderPinia.getAllOrders(currentPage.value - 1)
+  })
 }
 function viewPost(postId) {
   orderPinia.getPostById(postId)
@@ -95,7 +112,7 @@ function viewPost(postId) {
       :pagination="totalPages > 1 ? pagination : false"
       row-key="username"
       size="middle"
-      :scroll="{ y: 'calc(100vh - 250px)', x: 'max-content' }"
+      :scroll="{ y: 'calc(100vh - 280px)', x: 'max-content' }"
       class="table-custom-class"
     >
       <template #headerCell="{ column }">
@@ -109,7 +126,26 @@ function viewPost(postId) {
           {{ record.user.fullName }}
         </template>
         <template v-if="column.key === 'status'">
-          <status-tag-component :status="record.status" />
+          <a-dropdown
+            trigger="click"
+            placement="bottom"
+            arrow
+            :disabled="record.status !== 'PENDING'"
+          >
+            <status-tag-component
+              :class="{ pointer: record.status === 'PENDING' }"
+              :status="record.status"
+            />
+            <template #overlay>
+              <a-menu
+                @click="(event) => handleChangeStatus(record.id, event.key)"
+              >
+                <a-menu-item v-for="status in statuses" :key="status.value">
+                  {{ $t(status.label) }}
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
         </template>
         <template v-if="column.key === 'createdDate'">
           {{ dayjs(record.createdDate).format('DD.MM.YYYY') }}

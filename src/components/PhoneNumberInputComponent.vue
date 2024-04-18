@@ -3,15 +3,13 @@ import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   disable: Boolean,
-  value: {
-    type: String || null
-  },
+
   size: {
     type: String,
     default: 'middle'
   }
 })
-const emits = defineEmits(['update:modelValue'])
+const model = defineModel('value')
 const phone_number = ref()
 
 function formatPhoneNumber() {
@@ -31,20 +29,20 @@ function formatPhoneNumber() {
     const reg = new RegExp(`^([0-9]{2})([0-9]{3})([0-9]{2})([0-9]{${l - 7}})`)
     lastValue = v.replace(reg, '$1 $2-$3-$4')
   }
-  emits('update:modelValue', v)
+  model.value = v
   return (phone_number.value = lastValue)
 }
 
 const handleChangeProps = () => {
   const reg = new RegExp(`^([0-9]{2})([0-9]{3})([0-9]{2})([0-9]{${2}})`)
-  if (props.value && props.value.length === 9) {
-    phone_number.value = props.value.replace(reg, '$1 $2-$3-$4')
-  } else if (props.value === null) {
+  if (model.value && model.value.length === 9) {
+    phone_number.value = model.value.replace(reg, '$1 $2-$3-$4')
+  } else if (model.value === null) {
     phone_number.value = ''
   }
 }
 
-watch(props, () => {
+watch(model, () => {
   handleChangeProps()
 })
 onMounted(() => {
