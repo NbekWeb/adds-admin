@@ -9,6 +9,8 @@ import DashboardBoardView from '@/pages/dashboard/board/DashboardBoardView.vue'
 import DashboardBoardListView from '@/pages/dashboard/board/DashboardBoardListView.vue'
 import DashboardBoardCategoryView from '@/pages/dashboard/board/board-category/DashboardBoardCategoryView.vue'
 import DashboardBoardCategoryListView from '@/pages/dashboard/board/board-category/DashboardBoardCategoryListView.vue'
+import DashboardOrderView from '@/pages/dashboard/order/DashboardOrderView.vue'
+import DashboardOrderListView from '@/pages/dashboard/order/DashboardOrderListView.vue'
 
 const AuthView = () => import('@/pages/auth/AuthView.vue')
 
@@ -64,6 +66,18 @@ export const router = createRouter({
               path: '',
               name: 'DashboardBoardCategoryListView',
               component: DashboardBoardCategoryListView
+            }
+          ]
+        },
+        {
+          path: 'orders',
+          name: 'DashboardOrderView',
+          component: DashboardOrderView,
+          children: [
+            {
+              path: '',
+              name: 'DashboardOrderListView',
+              component: DashboardOrderListView
             }
           ]
         }

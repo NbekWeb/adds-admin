@@ -62,6 +62,9 @@ const uz = {
   ADD_NEW_LINKED_BUTTON: "Yangi tugma qo'shish",
   CREATE_AN_ORDER: "E'lon berish",
   //   labels
+  DATE: 'Sana',
+  CUSTOMER: 'Mijoz',
+  CHANNELS_NUMBER: 'Kanallar soni',
   CATEGORY_CREATE: "Kategoriya qo'shish",
   POST_LIVE_TIME: "E'lonni kanalda turish muddati",
   POST_PIN_TIME: "E'lonni pinda turish muddati",
@@ -101,7 +104,7 @@ const uz = {
   PIN_TIME: 'Pin muddati',
   START_TIME: 'Boshlanish muddati',
   END_TIME: 'Tugash muddati',
-  AMOUNT: 'Narxi',
+  AMOUNT: "Narxi(so'm)",
   CATEGORY: 'Kategoriya',
   SELECT_CATEGORY: 'Kategoriyani tanlang',
   DESCRIPTION: 'Tavsif',
@@ -120,6 +123,7 @@ const uz = {
   // statuses
   INACTIVE: 'Faol emas',
   ACTIVE: 'Faol',
+  EDITED: 'Tahrirlangan',
   PENDING: 'Kutilmoqda',
   SUCCESS: 'Muvoffaqiyatli',
   CANCELED: 'Bekor qilingan',

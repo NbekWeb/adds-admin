@@ -1,19 +1,18 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import useCore from '@/store/core.pinia.js'
 import useAuth from '@/store/auth.pinia'
 import Logo from '@/components/Logo.vue'
 import UserComponent from '@/pages/dashboard/components/UserComponent.vue'
 import IconGrid from '@/components/icons/IconGrid.vue'
 import IconAnnouncement from '@/components/icons/IconAnnouncement.vue'
-import IconCoinsStacked from '@/components/icons/IconCoinsStacked.vue'
 import IconNotificationText from '@/components/icons/IconNotificationText.vue'
 import IconSettings from '@/components/icons/IconSettings.vue'
 import IconHelp from '@/components/icons/IconHelp.vue'
 import IconPowerOff from '@/components/icons/IconPowerOff.vue'
 import IconShoppingCard from '@/components/icons/IconShoppingCard.vue'
 import IconUsers from '@/components/icons/IconUsers.vue'
+import IconHome from '@/components/icons/IconHome.vue'
 
 const { collapsed } = defineProps({
   collapsed: {
@@ -24,7 +23,6 @@ const { collapsed } = defineProps({
 const router = useRouter()
 const route = useRoute()
 
-const corePinia = useCore()
 const authPinia = useAuth()
 
 const selected = ref([])
@@ -37,6 +35,34 @@ const logOut = () => {
   authPinia.$reset()
   router.push('/')
 }
+
+const menuList = shallowRef([
+  {
+    icon: IconHome,
+    name: 'DashboardListView',
+    path: 'main'
+  },
+  {
+    icon: IconUsers,
+    name: 'DashboardUsersListView',
+    path: 'users'
+  },
+  {
+    icon: IconAnnouncement,
+    name: 'DashboardBoardListView',
+    path: 'boards'
+  },
+  {
+    icon: IconGrid,
+    name: 'DashboardBoardCategoryListView',
+    path: 'board-categories'
+  },
+  {
+    icon: IconShoppingCard,
+    name: 'DashboardOrderListView',
+    path: 'orders'
+  }
+])
 </script>
 
 <template>
@@ -68,48 +94,11 @@ const logOut = () => {
         :selectedKeys="[activeLink]"
         mode="inline"
       >
-        <a-menu-item :key="`main`">
+        <a-menu-item v-for="menu in menuList" :key="menu.path">
           <template #icon>
-            <icon-grid />
+            <component :is="menu.icon" />
           </template>
-          {{ $t('DashboardListView') }}
-        </a-menu-item>
-        <a-menu-item :key="`users`">
-          <template #icon>
-            <IconUsers />
-          </template>
-          {{ $t('DashboardUsersListView') }}
-        </a-menu-item>
-        <a-menu-item :key="`boards`">
-          <template #icon>
-            <icon-announcement />
-          </template>
-          {{ $t('DashboardBoardListView') }}
-        </a-menu-item>
-        <a-menu-item :key="`board-categories`">
-          <template #icon>
-            <icon-announcement />
-          </template>
-          {{ $t('DashboardBoardCategoryListView') }}
-        </a-menu-item>
-
-        <a-menu-item :key="`order`">
-          <template #icon>
-            <icon-shopping-card />
-          </template>
-          {{ $t('DashboardOrderListView') }}
-        </a-menu-item>
-        <!--        <a-menu-item :key="`user`">-->
-        <!--          <template #icon>-->
-        <!--            <icon-users />-->
-        <!--          </template>-->
-        <!--          {{ $t('DashboardUserListView') }}-->
-        <!--        </a-menu-item>-->
-        <a-menu-item :key="`payment`">
-          <template #icon>
-            <icon-coins-stacked />
-          </template>
-          {{ $t('DashboardPaymentListView') }}
+          {{ $t(menu.name) }}
         </a-menu-item>
       </a-menu>
     </div>
