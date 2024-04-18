@@ -1,10 +1,13 @@
 <script setup>
+import { reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import useCore from '@/store/core.pinia.js'
 import useBoardCategory from '@/store/board-category.pinia.js'
-import { reactive, ref, watch } from 'vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import IconMinus from '@/components/icons/IconMinus.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const model = defineModel('id')
 
@@ -12,50 +15,50 @@ const corePinia = useCore()
 const boardCategoryPinia = useBoardCategory()
 const { visibleDrawer, loadingUrl } = storeToRefs(corePinia)
 
+const formRef = ref()
 const form = reactive({
   name: {
     uz: null,
     ru: null
   },
-  parentId: model.value
+  parentId: model.value ? model.value : null,
+  orderNumber: 0
 })
-const orderNumber = ref(0)
+
 const rules = ref([
   {
     required: true,
-    message: 'REQUIRED_FIELD',
+    message: t('REQUIRED_FIELD'),
     trigger: 'blur'
   }
 ])
 function increment() {
-  orderNumber.value++
+  form.orderNumber++
 }
 function decrement() {
-  if (orderNumber.value > 0) {
-    orderNumber.value--
+  if (form.orderNumber > 0) {
+    form.orderNumber--
   }
 }
 
-watch(orderNumber, () => {
-  const number = orderNumber.value.toString().replace(/[^0-9]/g, '')
-  orderNumber.value = number ? number : 0
+watch(form, () => {
+  const number = form.orderNumber.toString().replace(/[^0-9]/g, '')
+  form.orderNumber = number ? number : 0
 })
 function cansel() {
   model.value = null
-  orderNumber.value = 0
   form.name.uz = null
   form.name.ru = null
+  form.orderNumber = 0
   visibleDrawer.value.delete('board/category/create')
 }
 function createBoardCategory() {
-  boardCategoryPinia.createBoardCategory(
-    {
-      name: form.name,
-      parentId: model.value,
-      orderNumber: orderNumber.value
-    },
-    cansel
-  )
+  formRef.value
+    .validate()
+    .then(() => {
+      boardCategoryPinia.createBoardCategory(form, cansel)
+    })
+    .catch(() => {})
 }
 </script>
 
@@ -65,18 +68,18 @@ function createBoardCategory() {
     @close="cansel"
     :title="$t('CATEGORY_CREATE')"
   >
-    <a-form layout="vertical" :model="form">
-      <a-form-item :label="$t('UZBEK')" :rules="rules">
+    <a-form layout="vertical" :model="form" ref="formRef">
+      <a-form-item :label="$t('UZBEK')" :name="['name', 'uz']" :rules="rules">
         <a-input v-model:value="form.name.uz" placeholder="Category" />
       </a-form-item>
-      <a-form-item :label="$t('RUSSIAN')" :rules="rules">
+      <a-form-item :label="$t('RUSSIAN')" :name="['name', 'ru']" :rules="rules">
         <a-input v-model:value="form.name.ru" placeholder="Category" />
       </a-form-item>
-      <a-form-item>
+      <a-form-item :label="$t('ORDER_NUMBER')" name="orderNumber">
         <a-input
           class="order-input flex justify-center"
           :placeholder="$t('ORDER_NUMBER')"
-          v-model:value="orderNumber"
+          v-model:value="form.orderNumber"
         >
           <template #addonBefore>
             <a-button
