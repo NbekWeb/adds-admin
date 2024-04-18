@@ -52,28 +52,27 @@ const useOrder = defineStore('order', {
         .finally(() => {
           core.loadingUrl.delete('post/get/one')
         })
+    },
+    changeOrderStatus(id, status, callback) {
+      const core = useCore()
+      core.loadingUrl.add('order/status/update')
+      api({
+        url: `order/approve/${id}`,
+        method: 'POST',
+        data: {
+          status: status
+        }
+      })
+        .then(() => {
+          callback()
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('order/status/update')
+        })
     }
-    // changeBoardStatus(id, status, callback) {
-    //   const core = useCore()
-    //   core.loadingUrl.add('board/status/update')
-    //   api({
-    //     url: `board/update-status/${id}`,
-    //     method: 'PUT',
-    //     data: {
-    //       status: status
-    //     }
-    //   })
-    //     .then(() => {
-    //       core.setToast({
-    //         type: 'success',
-    //         locale: 'CHANNEL_STATUS_CHANGED_SUCCESSFULLY'
-    //       })
-    //       callback()
-    //     })
-    //     .catch((error) => {
-    //       core.switchStatus(error)
-    //     })
-    // }
   }
 })
 export default useOrder
