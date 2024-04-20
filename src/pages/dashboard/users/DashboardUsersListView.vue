@@ -23,6 +23,8 @@ const userPinia = useUser()
 const { loadingUrl, visibleDrawer } = storeToRefs(corePinia)
 const { users, totalElements, totalPages, size } = storeToRefs(userPinia)
 
+const reg = new RegExp(`^([0-9]{2})([0-9]{3})([0-9]{2})([0-9]{${2}})`)
+
 const columns = reactive([
   {
     title: 'INDEX',
@@ -121,6 +123,9 @@ onMounted(() => {
       <template #bodyCell="{ column, record, index }">
         <template v-if="column.key === 'id'">
           {{ tableIndex(index, totalElements, currentPage - 1, size) }}
+        </template>
+        <template v-if="column.key === 'username'">
+          {{ record.username?.replace(reg, '$1 $2-$3-$4') }}
         </template>
         <template v-if="column.key === 'action'">
           <a-space>
