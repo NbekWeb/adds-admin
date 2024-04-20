@@ -145,6 +145,8 @@ const uz = {
   AN_SMS_CODE_WAS_SENT_TO_NUMBER: 'raqamga sms kod yuborildi',
   // An SMS code was sent to number 3
   //   notificitions
+  USER_STATUS_CHANGED_SUCCESSFULLY:
+    'Foydalanuvchi holati muvaffaqiyatli oʻzgartirildi',
   CHANNEL_STATUS_CHANGED_SUCCESSFULLY:
     'Kanal holati muvaffaqiyatli oʻzgartirildi',
   NO_DATA: "Ma'lumot mavjud emas!",

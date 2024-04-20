@@ -55,7 +55,9 @@ const columns = ref([
   {
     title: 'STATUS',
     dataIndex: 'status',
-    key: 'status'
+    key: 'status',
+    width: 120,
+    align: 'center'
   },
   {
     title: 'ACTIONS',
@@ -94,6 +96,7 @@ function handleChangeStatus(id, status) {
       :data-source="boards"
       :loading="loadingUrl.has('user/get/all')"
       :pagination="totalPages > 1 ? pagination : false"
+      :scroll="{ x: 1200, y: 360 }"
       row-key="username"
       size="middle"
       class="table-custom-class"
