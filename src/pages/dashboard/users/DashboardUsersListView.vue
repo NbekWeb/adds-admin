@@ -49,6 +49,13 @@ const columns = reactive([
     key: 'role'
   },
   {
+    title: 'STATUS',
+    dataIndex: 'active',
+    key: 'active',
+    width: 110,
+    align: 'center'
+  },
+  {
     title: 'ACTIONS',
     key: 'action',
     width: 100,
@@ -86,6 +93,11 @@ function handleChangeUser(id) {
   visibleDrawer.value.add('user/form')
   userId.value = id
   userPinia.getUserById(id)
+}
+function handleChangeUserStatus(id, status) {
+  userPinia.updateUserStatus(id, status, () => {
+    userPinia.getAllUsers(currentPage.value - 1)
+  })
 }
 onMounted(() => {
   userPinia.getAllUsers(currentPage.value - 1)
@@ -126,6 +138,18 @@ onMounted(() => {
         </template>
         <template v-if="column.key === 'username'">
           {{ record.username?.replace(reg, '$1 $2-$3-$4') }}
+        </template>
+        <template v-if="column.key === 'active'">
+          <a-switch
+            @click="handleChangeUserStatus(record.id, !record.active)"
+            :checked="record.active"
+            :loading="loadingUrl.has(`user/change/status/${record.id}`)"
+            :checked-children="$t('ACTIVE')"
+            :un-checked-children="$t('INACTIVE')"
+            :style="{
+              backgroundColor: `${record.active ? 'green' : 'red'}`
+            }"
+          />
         </template>
         <template v-if="column.key === 'action'">
           <a-space>

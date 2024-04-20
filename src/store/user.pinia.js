@@ -89,6 +89,31 @@ const useUser = defineStore('user', {
           core.loadingUrl.delete('user/update')
         })
     },
+    updateUserStatus(id, status, callback) {
+      const core = useCore()
+      core.loadingUrl.add(`user/change/status/${id}`)
+      api({
+        url: `user/admin/${id}`,
+        method: 'PUT',
+        data: {
+          active: status
+        }
+      })
+        .then(() => {
+          core.setToast({
+            type: 'success',
+            locale: 'USER_STATUS_CHANGED_SUCCESSFULLY'
+          })
+          callback()
+        })
+        .catch((error) => {
+          console.log(error)
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete(`user/change/status/${id}`)
+        })
+    },
     deleteUser(id, callback) {
       const core = useCore()
       core.loadingUrl.add(`user/delete/${id}`)

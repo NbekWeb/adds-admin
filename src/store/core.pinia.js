@@ -32,7 +32,7 @@ const useCore = defineStore('core', {
         }
         if (status >= 200 && status <= 300) {
           toastMessage = {
-            message: 'Success',
+            locale: 'SUCCESS',
             type: 'success'
           }
         }
@@ -59,7 +59,6 @@ const useCore = defineStore('core', {
         }
         this.setToast(toastMessage)
       } catch (err) {
-        console.log(err)
         this.setToast({
           type: 'error',
           locale: 'ERROR'
