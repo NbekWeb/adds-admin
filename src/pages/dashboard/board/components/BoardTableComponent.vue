@@ -37,6 +37,11 @@ const columns = ref([
     key: 'name'
   },
   {
+    title: 'OWNER',
+    dataIndex: 'owner',
+    key: 'owner'
+  },
+  {
     title: 'DESCRIPTION',
     dataIndex: 'description',
     key: 'description',
@@ -100,7 +105,9 @@ function handleChangeStatus(id, status) {
         <template v-if="column.key === 'id'">
           {{ tableIndex(index, totalElements, currentPage - 1, size) }}
         </template>
-
+        <template v-if="column.key === 'owner'">
+          {{ record.owner.fullName }}
+        </template>
         <template v-if="column.key === 'description'">
           <a-popover title="Description">
             <template #content>
