@@ -75,6 +75,7 @@ const uz = {
   THE_TIME_OF_PUBLICATION: "E'lon chiqish vaqti",
   TOTAL_PRICE: "Jami to'lov",
   ORDER_PRICE: 'Buyurtma narxi',
+  OWNER: 'Egasi',
   NAME: 'Nomi',
   INDEX: '№',
   SEARCH: 'Qidirish',
