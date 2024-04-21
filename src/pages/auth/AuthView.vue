@@ -5,7 +5,15 @@ import AuthFormComponent from '@/pages/auth/components/AuthFormComponent.vue'
 <template>
   <div class="login-page">
     <a-row class="h-100" :gutter="16" align="middle" justify="center">
-      <a-col :span="10" class="login-form">
+      <a-col
+        :xs="24"
+        :ms="24"
+        :md="24"
+        :lg="12"
+        :xl="10"
+        :xxl="8"
+        class="login-form"
+      >
         <a-card shadow>
           <div class="auth-form">
             <div>
