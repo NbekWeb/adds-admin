@@ -30,11 +30,13 @@ const columns = ref([
     dataIndex: 'id',
     key: 'id',
     width: 40
+    // fixed: 'left'
   },
   {
     title: 'NAME',
     dataIndex: 'name',
     key: 'name'
+    // fixed: 'left'
   },
   {
     title: 'OWNER',
@@ -58,12 +60,14 @@ const columns = ref([
     key: 'status',
     width: 120,
     align: 'center'
+    // fixed: 'right'
   },
   {
     title: 'ACTIONS',
     key: 'action',
     width: 100,
-    align: 'center'
+    align: 'center',
+    fixed: 'right'
   }
 ])
 const pagination = computed(() => ({
