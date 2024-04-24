@@ -61,14 +61,14 @@ const columns = ref([
     width: 120,
     align: 'center'
     // fixed: 'right'
-  },
-  {
-    title: 'ACTIONS',
-    key: 'action',
-    width: 100,
-    align: 'center',
-    fixed: 'right'
   }
+  // {
+  //   title: 'ACTIONS',
+  //   key: 'action',
+  //   width: 100,
+  //   align: 'center',
+  //   fixed: 'right'
+  // }
 ])
 const pagination = computed(() => ({
   total: totalElements.value,
@@ -100,7 +100,6 @@ function handleChangeStatus(id, status) {
       :data-source="boards"
       :loading="loadingUrl.has('user/get/all')"
       :pagination="totalPages > 1 ? pagination : false"
-      :scroll="{ x: 1200, y: 360 }"
       row-key="username"
       size="middle"
       class="table-custom-class"
