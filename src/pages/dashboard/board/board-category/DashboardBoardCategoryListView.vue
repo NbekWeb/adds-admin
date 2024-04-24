@@ -57,7 +57,7 @@ onMounted(() => {
       </a-button>
     </template>
   </page-header-component>
-  <board-category-form-component :id="rowId" />
+  <board-category-form-component v-model:id="rowId" />
   <loader-component loading-url="board/category/get/all">
     <a-table
       :data-source="categoriesTree"

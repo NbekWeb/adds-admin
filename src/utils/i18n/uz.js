@@ -153,6 +153,7 @@ const uz = {
   SELECT_DATE_FREE_DATE_FOR_SEE:
     "E'lon berish uchun bo'sh vaqtlarni ko'rish uchun sanani tanlang",
   DO_YOU_WANT_TO_DELETE_THE_USER: "Foydalanuvchini o'chirishni xoxlaysizmi?",
+  USER_DELETED_SUCCESSFULLY: "Foydalanuvchi muvafaqiyatli o'chirildi",
   YOU_MUST_AGREE_TO_THE_OFFER_TO_REGISTER:
     "Ro'yxatdan o'tish uchun oferta ga rozilik bildirishingiz shart",
   CHANNEL_UPDATED_SUCCESSFULLY: 'Kanal muvafaqiyatli yangilandi',

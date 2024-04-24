@@ -21,7 +21,7 @@ const form = reactive({
     uz: null,
     ru: null
   },
-  parentId: model.value ? model.value : null,
+  parentId: null,
   orderNumber: 0
 })
 
@@ -56,6 +56,7 @@ function createBoardCategory() {
   formRef.value
     .validate()
     .then(() => {
+      form.parentId = model.value
       boardCategoryPinia.createBoardCategory(form, cansel)
     })
     .catch(() => {})

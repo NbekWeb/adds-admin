@@ -122,6 +122,10 @@ const useUser = defineStore('user', {
         method: 'DELETE'
       })
         .then(() => {
+          core.setToast({
+            type: 'success',
+            locale: 'USER_DELETED_SUCCESSFULLY'
+          })
           callback()
         })
         .catch((error) => {

@@ -33,11 +33,8 @@ function onSubmit() {
     .validate()
     .then((value) => {
       authPinia.login(value)
-      console.log(value)
     })
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch((error) => {})
 }
 </script>
 
