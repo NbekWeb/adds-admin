@@ -163,18 +163,25 @@ onMounted(() => {
                 <IconEdit />
               </template>
             </a-button>
-            <a-button
-              :loading="loadingUrl.has(`user/delete/${record.id}`)"
-              @click="deleteUserById(record.id)"
-              class="btn"
-              type="primary"
-              size="middle"
-              danger
+            <a-popconfirm
+              placement="topRight"
+              :title="$t('DO_YOU_WANT_TO_DELETE_THE_USER')"
+              :ok-text="$t('YES')"
+              :cancel-text="$t('NO')"
+              @confirm="deleteUserById(record.id)"
             >
-              <template #icon>
-                <IconTrash />
-              </template>
-            </a-button>
+              <a-button
+                :loading="loadingUrl.has(`user/delete/${record.id}`)"
+                class="btn"
+                type="primary"
+                size="middle"
+                danger
+              >
+                <template #icon>
+                  <IconTrash />
+                </template>
+              </a-button>
+            </a-popconfirm>
           </a-space>
         </template>
       </template>
