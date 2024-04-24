@@ -27,13 +27,13 @@ const columns = ref([
     key: 'id',
     width: 70,
     align: 'center'
-  },
-  {
-    title: 'ACTIONS',
-    key: 'actions',
-    width: 100,
-    align: 'center'
   }
+  // {
+  //   title: 'ACTIONS',
+  //   key: 'actions',
+  //   width: 100,
+  //   align: 'center'
+  // }
 ])
 const rowId = ref(null)
 

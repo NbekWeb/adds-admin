@@ -113,7 +113,12 @@ function handleChangeStatus(id, status) {
           {{ tableIndex(index, totalElements, currentPage - 1, size) }}
         </template>
         <template v-if="column.key === 'name'">
-          <a :href="record.channelLink" target="_blank" rel="opener">
+          <a
+            :href="record.channelLink"
+            target="_blank"
+            rel="opener"
+            class="text-bold"
+          >
             {{ record.name }}
           </a>
         </template>
