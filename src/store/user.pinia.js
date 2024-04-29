@@ -114,6 +114,29 @@ const useUser = defineStore('user', {
           core.loadingUrl.delete(`user/change/status/${id}`)
         })
     },
+    fillingUserBalance(id, form, callback) {
+      const core = useCore()
+      core.loadingUrl.add(`user/balance/${id}`)
+      api({
+        url: `user/balance`,
+        method: 'POST',
+        data: form
+      })
+        .then(() => {
+          core.setToast({
+            type: 'success',
+            locale: 'FILLED_USER_BALANCE_SUCCESSFULLY'
+          })
+          callback()
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          console.log(id)
+          core.loadingUrl.delete(`user/balance/${id}`)
+        })
+    },
     deleteUser(id, callback) {
       const core = useCore()
       core.loadingUrl.add(`user/delete/${id}`)

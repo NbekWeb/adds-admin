@@ -13,6 +13,9 @@ import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import UserFormComponent from '@/pages/dashboard/users/components/UserFormComponent.vue'
+import IconWallet from '@/components/icons/IconWallet.vue'
+import MoneyInputComponent from '@/components/MoneyInputComponent.vue'
+import UserBalanceFormComponent from '@/pages/dashboard/users/components/UserBalanceFormComponent.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -58,7 +61,7 @@ const columns = reactive([
   {
     title: 'ACTIONS',
     key: 'action',
-    width: 100,
+    width: 130,
     align: 'center'
   }
 ])
@@ -99,6 +102,7 @@ function handleChangeUserStatus(id, status) {
     userPinia.getAllUsers(currentPage.value - 1)
   })
 }
+
 onMounted(() => {
   userPinia.getAllUsers(currentPage.value - 1)
 })
@@ -153,6 +157,7 @@ onMounted(() => {
         </template>
         <template v-if="column.key === 'action'">
           <a-space>
+            <user-balance-form-component :user-id="record.id" />
             <a-button
               class="btn"
               type="primary"
@@ -188,4 +193,8 @@ onMounted(() => {
     </a-table>
   </loader-component>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+.balance-filling-form {
+  width: 300px;
+}
+</style>
