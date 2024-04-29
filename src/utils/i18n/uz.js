@@ -61,6 +61,7 @@ const uz = {
   REGISTER: "Ro'yxatdan o'tish",
   ADD_NEW_LINKED_BUTTON: "Yangi tugma qo'shish",
   CREATE_AN_ORDER: "E'lon berish",
+  FILLING: "To'ldirish",
   //   labels
   PASSWORD: 'Parol',
   USERNAME: 'Foydalanuvchi nomi',
@@ -122,6 +123,7 @@ const uz = {
   SELECT_CHANNEL: 'Kanalni tanlang',
   SELECT_CONFIGURATION: "Ta'rifni tanlang",
   SELECT_DATE_AND_TIME: 'Sana va vaqtni tanlang',
+  FILLING_UP_THE_USER_ACCOUNT: "Foydalanuvchi hisobini to'ldirish",
 
   // statuses
   INACTIVE: 'Faol emas',
@@ -143,8 +145,10 @@ const uz = {
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
   REGISTER_TO_USE_THE_SYSTEM: "Tizimdan foydalanish uchun ro'yxatdan o'ting",
   AN_SMS_CODE_WAS_SENT_TO_NUMBER: 'raqamga sms kod yuborildi',
-  // An SMS code was sent to number 3
-  //   notificitions
+
+  //   notifications
+  FILLED_USER_BALANCE_SUCCESSFULLY:
+    "Foydalanuvchi balansi muvaffaqiyatli to'ldirildi",
   USER_STATUS_CHANGED_SUCCESSFULLY:
     'Foydalanuvchi holati muvaffaqiyatli oʻzgartirildi',
   CHANNEL_STATUS_CHANGED_SUCCESSFULLY:
