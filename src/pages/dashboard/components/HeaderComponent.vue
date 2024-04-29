@@ -1,21 +1,20 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import useAuth from '@/store/auth.pinia.js'
+import { formatAmount } from '../../../composables/index.js'
 
 const authPinia = useAuth()
 const { user } = storeToRefs(authPinia)
-
 </script>
 
 <template>
   <a-row :gutter="16" justify="end" align="middle">
-    
     <a-col>
       <div>
         <b>ID: {{ user?.id }}</b>
       </div>
       <p class="m-0 small text-muted">
-        {{ $t('BALANCE') }}: {{ user?.balance }} {{ $t('SOUM') }}
+        {{ $t('BALANCE') }}: {{ formatAmount(user?.balance) }} {{ $t('SOUM') }}
       </p>
     </a-col>
   </a-row>
