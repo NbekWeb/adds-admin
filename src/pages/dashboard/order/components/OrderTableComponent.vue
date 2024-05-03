@@ -7,8 +7,10 @@ import amount from '@/composables/amount.js'
 import { useRoute, useRouter } from 'vue-router'
 import useOrder from '@/store/order.pinia.js'
 import useCore from '@/store/core.pinia.js'
-import BoardStatusComponent from '@/pages/dashboard/board/components/BoardStatusComponent.vue'
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import StatusTagComponent from '@/components/StatusTagComponent.vue'
+import IconMessageTextSquare from '@/components/icons/IconMessageTextSquare.vue'
+import IconEye from '@/components/icons/IconEye.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -70,7 +72,7 @@ const statuses = ref([
   },
   {
     label: 'REJECT',
-    value: 'REJECTED'
+    value: 'REJECTED_BY_MODERATOR'
   }
 ])
 
