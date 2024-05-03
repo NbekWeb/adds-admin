@@ -113,7 +113,7 @@ function handleChangeStatus(id, status) {
         </template>
         <template v-if="column.key === 'name'">
           <a
-            :href="record.channelLink"
+            :href="`https://${record.channelLink}`"
             target="_blank"
             rel="opener"
             class="text-bold"
