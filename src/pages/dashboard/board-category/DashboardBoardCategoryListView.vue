@@ -5,7 +5,7 @@ import useBoardCategory from '@/store/board-category.pinia.js'
 import useCore from '@/store/core.pinia.js'
 import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
-import BoardCategoryFormComponent from '@/pages/dashboard/board/board-category/components/BoardCategoryFormComponent.vue'
+import BoardCategoryFormComponent from '@/pages/dashboard/board-category/components/BoardCategoryFormComponent.vue'
 import IconTrash from '@/components/icons/IconTrash.vue'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 
