@@ -1,43 +1,49 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
-const { status } = defineProps({
+const props = defineProps({
   status: {
     type: String
   }
 })
+
+const statusList = ref({
+  REJECTED_BY_MODERATOR: 'error',
+  CANCELED: 'error',
+  REJECTED: 'error',
+  FAILED: 'error',
+  EXPIRED: 'error',
+  REJECTED_BY_BOARD_OWNER: 'error',
+  APPROVED: 'lime',
+  BOARD_OWNER_APPROVED: 'lime',
+  ACCEPTED: 'lime',
+  FINISHED: 'success',
+  STARTED: 'warning',
+  PENDING: 'processing',
+  AWAITING_BOARD_OWNER: 'processing',
+  CREATED: 'magenta'
+})
 const statusIcon = reactive({
   CREATED: '📌',
-  APPROVED: '✔️',
+  APPROVED: '✅',
+  BOARD_OWNER_APPROVED: '✅',
   PENDING: '🕒',
   STARTED: '💼',
   FINISHED: '✅',
   CANCELED: '🚫',
-  REJECTED: '🚫'
+  REJECTED: '🚫',
+  FAILED: '🚫'
 })
 </script>
 
 <template>
   <a-tag
-    :color="
-      status === 'CREATED'
-        ? 'magenta'
-        : status === 'PENDING'
-          ? 'processing'
-          : status === 'APPROVED'
-            ? 'lime'
-            : status === 'CANCELED' || status === 'REJECTED'
-              ? 'error'
-              : status === 'FINISHED'
-                ? 'success'
-                : status === 'STARTED'
-                  ? 'warning'
-                  : ''
-    "
+    :color="statusList[status]"
     :bordered="false"
+    class="m-0"
     v-bind="$attrs"
   >
-    <template #icon> {{ statusIcon[status] }} </template>
+    <template #icon> {{ statusIcon[status] }}</template>
     {{ $t(status) }}
   </a-tag>
 </template>

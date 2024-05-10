@@ -127,6 +127,8 @@ const uz = {
   NO_NOTIFICATIONS: 'Bildirishnomalar mavjud emas',
   NOTIFICATIONS: 'Bildirishnomalar',
   // statuses
+  EXPIRED: "Muddati o'tib ketgan",
+  FAILED: 'Muvaffaqiyatsiz',
   INACTIVE: 'Faol emas',
   ACTIVE: 'Faol',
   EDITED: 'Tahrirlangan',
@@ -141,6 +143,8 @@ const uz = {
   REJECTED: 'Rad qilingan',
   REJECT: 'Rad qilish',
   BOARD_OWNER_APPROVED: 'Kanal egasi tasdiqlagan',
+  AWAITING_BOARD_OWNER: 'Kanal egasi tasdiqlashi kutilmoqda',
+  ACCEPTED: 'Qabul qilingan',
   // descriptions
   LOGIN_PAGE_DESCRIPTION: 'Moderator',
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
