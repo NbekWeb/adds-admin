@@ -11,6 +11,46 @@ $purple: #5148E7;
 $white: #fff;
 
 $text: left, right, center, justify;
+$fontWeight: 100, 200, 300, 400, 500, 600, 700, 800, 900;
+$fontSizes: (
+        'xs': (
+                'fs': 0.75rem,
+                'lh': 1rem
+        ) ,
+        'sm': (
+                'fs': 0.875rem,
+                'lh': 1.25rem
+        ) ,
+        'base': (
+                'fs': 1rem,
+                'lh': 1.5rem
+        ) ,
+        'lg': (
+                'fs': 1.125rem,
+                'lh': 1.75rem
+        ) ,
+        "xl": (
+                'fs': 1.25rem,
+                'lh': 1.75rem
+        ) ,
+        "2xl": (
+                'fs': 1.5rem,
+                'lh': 2rem
+        ) ,
+        "3xl": (
+                'fs':  1.875rem,
+                'lh': 2.25rem
+        ) ,
+        "4xl": (
+                'fs': 2.25rem,
+                'lh': 2.5rem
+        ) ,
+        "5xl":(
+                'fs': 3rem,
+                'lh': 1
+        ) ,
+
+);
 $sizes: (
         0: 0,
         1: .25rem,
@@ -19,7 +59,7 @@ $sizes: (
         4: 1.5rem,
         5: 3rem
 );
-$boxSizes:(
+$boxSizes: (
         0: 0,
         25: 25%,
         50: 50%,
@@ -34,7 +74,29 @@ $mediaSizesForWith:(
         'lg': 1024px,
         "xl": 1200px,
 );
-
+$displays: (
+        'block': 'block',
+        'inline-block': 'inline-block',
+        'inline': 'inline',
+        'flex': 'flex',
+        'inline-flex': 'inline-flex',
+        'table': 'table',
+        'inline-table': 'inline-table',
+        'table-caption': 'table-caption',
+        'table-cell': 'table-cell',
+        'table-column': 'table-column',
+        'table-column-group': 'table-column-group',
+        'table-footer-group': 'table-footer-group',
+        'table-header-group': 'table-header-group',
+        'table-row-group': 'table-row-group',
+        'table-row': 'table-row',
+        'flow-root': 'flow-root',
+        'grid': 'grid',
+        'inline-grid': 'inline-grid',
+        'contents': 'contents',
+        'list-item': 'list-item',
+        'hidden': 'none'
+);
 $colors: (
         "primary": $primary,
         "muted": $muted,
@@ -49,3 +111,5 @@ $colors: (
 g {
   background-color: rgba(0, 48, 255, 0.4);
 }
+
+
