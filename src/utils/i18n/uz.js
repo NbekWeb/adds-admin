@@ -124,8 +124,11 @@ const uz = {
   SELECT_CONFIGURATION: "Ta'rifni tanlang",
   SELECT_DATE_AND_TIME: 'Sana va vaqtni tanlang',
   FILLING_UP_THE_USER_ACCOUNT: "Foydalanuvchi hisobini to'ldirish",
-
+  NO_NOTIFICATIONS: 'Bildirishnomalar mavjud emas',
+  NOTIFICATIONS: 'Bildirishnomalar',
   // statuses
+  EXPIRED: "Muddati o'tib ketgan",
+  FAILED: 'Muvaffaqiyatsiz',
   INACTIVE: 'Faol emas',
   ACTIVE: 'Faol',
   EDITED: 'Tahrirlangan',
@@ -140,6 +143,8 @@ const uz = {
   REJECTED: 'Rad qilingan',
   REJECT: 'Rad qilish',
   BOARD_OWNER_APPROVED: 'Kanal egasi tasdiqlagan',
+  AWAITING_BOARD_OWNER: 'Kanal egasi tasdiqlashi kutilmoqda',
+  ACCEPTED: 'Qabul qilingan',
   // descriptions
   LOGIN_PAGE_DESCRIPTION: 'Moderator',
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
