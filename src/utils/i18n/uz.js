@@ -124,7 +124,8 @@ const uz = {
   SELECT_CONFIGURATION: "Ta'rifni tanlang",
   SELECT_DATE_AND_TIME: 'Sana va vaqtni tanlang',
   FILLING_UP_THE_USER_ACCOUNT: "Foydalanuvchi hisobini to'ldirish",
-
+  NO_NOTIFICATIONS: 'Bildirishnomalar mavjud emas',
+  NOTIFICATIONS: 'Bildirishnomalar',
   // statuses
   INACTIVE: 'Faol emas',
   ACTIVE: 'Faol',

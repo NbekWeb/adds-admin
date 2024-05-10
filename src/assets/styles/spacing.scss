@@ -50,6 +50,19 @@
   }
 }
 
+@each $size-name, $size-value in $fontSizes {
+  $font-size: map-get($size-value, 'fs');
+  $line-height: map-get($size-value, 'lh');
+  .text-#{$size-name}{
+    font-size: $font-size;
+    line-height: $line-height;
+  }
+}
+@each $w in $fontWeight{
+  .text-#{$w}{
+    font-weight: $w;
+  }
+}
 @each $t in $text {
   .text-#{$t} {
     text-align: $t;
@@ -112,6 +125,11 @@
   .py-#{$key} {
     padding-top: $size !important;
     padding-bottom: $size !important;
+  }
+}
+@each $display, $value in $displays{
+  .#{$display}{
+    display: #{$value}!important;
   }
 }
 @each $key, $size in $mediaSizesForWith{

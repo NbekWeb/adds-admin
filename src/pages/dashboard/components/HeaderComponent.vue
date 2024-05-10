@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import useAuth from '@/store/auth.pinia.js'
 import { formatAmount } from '../../../composables/index.js'
+import NotificationMainComponent from '@/pages/dashboard/components/Notification/NotificationMainComponent.vue'
 
 const authPinia = useAuth()
 const { user } = storeToRefs(authPinia)
@@ -10,12 +11,13 @@ const { user } = storeToRefs(authPinia)
 <template>
   <a-row :gutter="16" justify="end" align="middle">
     <a-col>
-      <div>
-        <b>ID: {{ user?.id }}</b>
-      </div>
-      <p class="m-0 small text-muted">
-        {{ $t('BALANCE') }}: {{ formatAmount(user?.balance) }} {{ $t('SOUM') }}
-      </p>
+      <notification-main-component />
+      <!--      <div>-->
+      <!--        <b>ID: {{ user?.id }}</b>-->
+      <!--      </div>-->
+      <!--      <p class="m-0 small text-muted">-->
+      <!--        {{ $t('BALANCE') }}: {{ formatAmount(user?.balance) }} {{ $t('SOUM') }}-->
+      <!--      </p>-->
     </a-col>
   </a-row>
 </template>
