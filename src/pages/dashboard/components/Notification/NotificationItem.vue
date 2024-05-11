@@ -17,10 +17,13 @@ const notificationPinia = useNotifications()
 function handleReadNotification() {
   if (!props.notification.read) {
     notificationPinia.readNotification(props.notification.id)
-    notificationPinia.checkNotifications()
+    notificationPinia.checkNotifications(() => {})
     model.value = false
     router.push({
-      name: 'DashboardOrderListView'
+      name: 'DashboardOrderItemView',
+      params: {
+        id: props.notification?.itemId
+      }
     })
   }
 }

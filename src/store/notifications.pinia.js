@@ -20,7 +20,8 @@ const useNotifications = defineStore('notifications', {
         params: {
           page: page,
           size: 6,
-          type: 'MODERATOR'
+          isRead: null,
+          type: 'CLIENT'
         }
       })
         .then(({ data }) => {
@@ -30,6 +31,8 @@ const useNotifications = defineStore('notifications', {
           this.totalPages = data.totalPages
           this.notifications = [...this.notifications, ...data.content]
           this.notifications = uniqueItems(this.notifications, 'id')
+
+          this.newNotifications = []
           this.notifications.forEach((item) => {
             if (!this.oldNotifications.has(item.id) && !item.read) {
               this.newNotifications.push(item)
@@ -38,7 +41,31 @@ const useNotifications = defineStore('notifications', {
           })
         })
         .catch((error) => {
-          console.log(error)
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('get/all/notifications')
+        })
+    },
+    getUnreadNotifications() {
+      const core = useCore()
+      core.loadingUrl.add('get/all/notifications')
+      api({
+        url: 'notification',
+        params: {
+          page: 0,
+          size: 1000,
+          isRead: false,
+          type: 'CLIENT'
+        }
+      })
+        .then(({ data }) => {
+          this.newNotifications = data.content
+          data.content.forEach((item) => {
+            this.oldNotifications.add(item.id)
+          })
+        })
+        .catch((error) => {
           core.switchStatus(error)
         })
         .finally(() => {
@@ -51,7 +78,7 @@ const useNotifications = defineStore('notifications', {
       api({
         url: 'notification/count',
         params: {
-          type: 'MODERATOR'
+          type: 'CLIENT'
         }
       })
         .then(({ data }) => {
