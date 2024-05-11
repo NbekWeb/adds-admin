@@ -31,14 +31,6 @@ const useNotifications = defineStore('notifications', {
           this.totalPages = data.totalPages
           this.notifications = [...this.notifications, ...data.content]
           this.notifications = uniqueItems(this.notifications, 'id')
-
-          this.newNotifications = []
-          this.notifications.forEach((item) => {
-            if (!this.oldNotifications.has(item.id) && !item.read) {
-              this.newNotifications.push(item)
-              this.oldNotifications.add(item.id)
-            }
-          })
         })
         .catch((error) => {
           core.switchStatus(error)
@@ -60,10 +52,14 @@ const useNotifications = defineStore('notifications', {
         }
       })
         .then(({ data }) => {
-          this.newNotifications = data.content
-          data.content.forEach((item) => {
-            this.oldNotifications.add(item.id)
+          this.newNotifications = data.content.filter((item) => {
+            if (!this.oldNotifications.has(item.id)) {
+              this.oldNotifications.add(item.id)
+              return item
+            }
           })
+
+          console.log(this.newNotifications)
         })
         .catch((error) => {
           core.switchStatus(error)
