@@ -11,6 +11,10 @@ import DashboardBoardCategoryView from '@/pages/dashboard/board-category/Dashboa
 import DashboardBoardCategoryListView from '@/pages/dashboard/board-category/DashboardBoardCategoryListView.vue'
 import DashboardOrderView from '@/pages/dashboard/order/DashboardOrderView.vue'
 import DashboardOrderListView from '@/pages/dashboard/order/DashboardOrderListView.vue'
+import DashboardKioskBoardView from '@/pages/dashboard/kiosk-board/DashboardKioskBoardView.vue'
+import DashboardKioskBoardListView from '@/pages/dashboard/kiosk-board/DashboardKioskBoardListView.vue'
+import DashboardKioskPostCreateFormView from '@/pages/dashboard/kiosk-board/create/DashboardKioskPostCreateFormView.vue'
+
 
 const AuthView = () => import('@/pages/auth/AuthView.vue')
 
@@ -54,6 +58,23 @@ export const router = createRouter({
               path: '',
               name: 'DashboardBoardListView',
               component: DashboardBoardListView
+            }
+          ]
+        },
+        {
+          path: 'kiosk-boards',
+          name: 'DashboardKioskBoardView',
+          component: DashboardKioskBoardView,
+          children: [
+            {
+              path: '',
+              name: 'DashboardKioskBoardListView',
+              component: DashboardKioskBoardListView
+            },
+            {
+              path: 'create',
+              name: 'DashboardKioskPostCreateFormView',
+              component: DashboardKioskPostCreateFormView
             }
           ]
         },
