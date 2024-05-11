@@ -78,7 +78,7 @@ const useNotifications = defineStore('notifications', {
       api({
         url: 'notification/count',
         params: {
-          type: 'CLIENT'
+          type: 'MODERATOR'
         }
       })
         .then(({ data }) => {
