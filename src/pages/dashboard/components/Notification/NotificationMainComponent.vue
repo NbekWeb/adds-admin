@@ -41,7 +41,6 @@ watch(newNotifications, () => {
 watch(count, async () => {
   if (count.value) {
     await notificationPinia.getNotifications(0)
-    await openNotification()
   }
 })
 function getPegableNotifications(page) {
