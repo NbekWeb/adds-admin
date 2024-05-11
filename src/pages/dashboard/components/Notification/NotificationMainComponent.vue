@@ -50,9 +50,9 @@ function getPegableNotifications(page) {
 }
 
 onMounted(() => {
-  checkNotifications()
   notificationPinia.getUnreadNotifications()
   notificationPinia.getNotifications(0)
+  checkNotifications()
   setInterval(checkNotifications, 60000)
 })
 </script>
