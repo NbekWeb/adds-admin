@@ -21,7 +21,7 @@ const useNotifications = defineStore('notifications', {
           page: page,
           size: 6,
           isRead: null,
-          type: 'CLIENT'
+          type: 'MODERATOR'
         }
       })
         .then(({ data }) => {
