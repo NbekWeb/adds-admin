@@ -14,6 +14,7 @@ import IconShoppingCard from '@/components/icons/IconShoppingCard.vue'
 import IconUsers from '@/components/icons/IconUsers.vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import IconMonitor from '@/components/icons/IconMonitor.vue'
+import IconMessageTextSquare from '@/components/icons/IconMessageTextSquare.vue'
 
 const { collapsed } = defineProps({
   collapsed: {
@@ -57,6 +58,11 @@ const menuList = shallowRef([
     path: 'kiosk-boards',
     name: 'DashboardKioskBoardListView',
     icon: IconMonitor
+  },
+  {
+    path: 'petition',
+    name: 'DashboardPetitionView',
+    icon: IconMessageTextSquare
   },
   {
     icon: IconGrid,
