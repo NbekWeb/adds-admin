@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import useKioskBoard from '@/store/kiosk-board.pinia.js'
 import { useRoute, useRouter } from 'vue-router'
 
-import BoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
+import KioskBoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
 import { storeToRefs } from 'pinia'
 import useCore from '@/store/core.pinia.js'
 import useBoardCategory from '@/store/board-category.pinia.js'
@@ -111,12 +111,12 @@ onMounted(() => {
           <template #icon>
             <IconPlus />
           </template>
-          {{ $t('ADD') }} sa1
+          {{ $t('ADD') }} 
         </a-button>
       </a-space>
     </template>
   </page-header-component>
-  <board-table-component />
+  <kiosk-board-table-component />
 </template>
 
 <style scoped lang="scss">

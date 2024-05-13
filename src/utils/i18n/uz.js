@@ -16,6 +16,8 @@ const uz = {
   DashboardSettingsView: 'Sozlamalar',
   BoardConfigurationsView: "Ta'riflar",
   DashboardOrderFormView: "E'lon berish",
+  DashboardPetitionView:"Arizalar",
+  DashboardPetitionListView:"Arizalar ro'yxati",
 
   Help: 'Yordam',
   News: 'Xabar va yangilik',
@@ -28,6 +30,7 @@ const uz = {
   DashboardPostFormView: "Post qo'shish",
   DashboardNotFond: 'Sahifa topilmadi',
   DashboardBoardItemInfoView: "Kanal ma'lumotlari",
+  DashboardKioskPostCreateFormView: "Kiosk yaratish",
 
   //   validations
   REQUIRED_FIELD: 'Majburiy maydon',
@@ -126,6 +129,9 @@ const uz = {
   FILLING_UP_THE_USER_ACCOUNT: "Foydalanuvchi hisobini to'ldirish",
   NO_NOTIFICATIONS: 'Bildirishnomalar mavjud emas',
   NOTIFICATIONS: 'Bildirishnomalar',
+  KIOSK_BOARD_ADDRESS:'Kiosk Manzili',
+  KIOSK_BOARD_NAME:'Kiosk Nomi',
+  FIND_KIOSK_BOARD:'Kiosk Manzili',
   // statuses
   EXPIRED: "Muddati o'tib ketgan",
   FAILED: 'Muvaffaqiyatsiz',

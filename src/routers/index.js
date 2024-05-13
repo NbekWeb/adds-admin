@@ -13,8 +13,9 @@ import DashboardOrderView from '@/pages/dashboard/order/DashboardOrderView.vue'
 import DashboardOrderListView from '@/pages/dashboard/order/DashboardOrderListView.vue'
 import DashboardKioskBoardView from '@/pages/dashboard/kiosk-board/DashboardKioskBoardView.vue'
 import DashboardKioskBoardListView from '@/pages/dashboard/kiosk-board/DashboardKioskBoardListView.vue'
-import DashboardKioskPostCreateFormView from '@/pages/dashboard/kiosk-board/create/DashboardKioskPostCreateFormView.vue'
-
+import DashboardKioskPostCreateFormView from '@/pages/dashboard/kiosk-board/create/[id]/DashboardKioskPostCreateFormView.vue'
+import DashboardPetitionView from '@/pages/dashboard/petition/DashboardPetitionView.vue'
+import DashboardPetitionListView from '@/pages/dashboard/petition/DashboardPetitionListView.vue'
 
 const AuthView = () => import('@/pages/auth/AuthView.vue')
 
@@ -72,7 +73,7 @@ export const router = createRouter({
               component: DashboardKioskBoardListView
             },
             {
-              path: 'create',
+              path: 'create/:id',
               name: 'DashboardKioskPostCreateFormView',
               component: DashboardKioskPostCreateFormView
             }
@@ -99,6 +100,18 @@ export const router = createRouter({
               path: '',
               name: 'DashboardOrderListView',
               component: DashboardOrderListView
+            }
+          ]
+        },
+        {
+          path: 'petition',
+          name: 'DashboardPetitionView',
+          component: DashboardPetitionView,
+          children: [
+            {
+              path: '',
+              name: 'DashboardPetitionListView',
+              component: DashboardPetitionListView
             }
           ]
         }

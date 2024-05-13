@@ -1,5 +1,5 @@
 <script setup>
-import KioskBoardFormComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardMapComponent.vue'
+import KioskBoardFormComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardFormComponent.vue'
 </script>
 
 <template>
