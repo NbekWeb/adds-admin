@@ -132,6 +132,7 @@ const uz = {
   KIOSK_BOARD_ADDRESS:'Kiosk Manzili',
   KIOSK_BOARD_NAME:'Kiosk Nomi',
   FIND_KIOSK_BOARD:'Kiosk Manzili',
+  WEEK_SELECT:'Hafta kunini tanlang',
   // statuses
   EXPIRED: "Muddati o'tib ketgan",
   FAILED: 'Muvaffaqiyatsiz',
@@ -180,6 +181,7 @@ const uz = {
   BOARD_TIME_CONFIGURATION_DELETED_SUCCESSFULLY:
     "Ta'rif muvafaqiyatli o'chirildi",
   POST_ADDED_SUCCESSFULLY: "Post muvafaqiyatli qo'shildi",
+  DURATION_CHANGED: "Vaqt muvafaqiyatli o'zgartirildi",
   POST_DELETED_SUCCESSFULLY: "Post muvafaqiyatli o'chirildi",
   DOU_YOU_WANT_TO_LOG_OUT: 'Tizimdan chiqmoqchimisiz?',
   INTERNAL_SERVER_ERROR:

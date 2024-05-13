@@ -3,7 +3,7 @@ import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
 import { computed, onMounted, ref } from 'vue'
 import useKioskBoard from '@/store/kiosk-board.pinia.js'
 import { useRoute, useRouter } from 'vue-router'
-
+import IconEdit from '@/components/icons/IconEdit.vue'
 import KioskBoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
 import { storeToRefs } from 'pinia'
 import useCore from '@/store/core.pinia.js'
@@ -26,8 +26,13 @@ const currentPage = computed(() =>
 const category = ref(null)
 const status = ref(null)
 const search = ref(null)
+const visible = ref(false)
 
 const timeout = ref()
+
+const hide = () => {
+  visible.value = false
+}
 
 function handleChangeFilter() {
   router.push({
@@ -63,8 +68,32 @@ onMounted(() => {
   <page-header-component :title="$t('DashboardBoardListView')">
     <template #actions>
       <a-space>
+        <a-popover
+          v-model:open="visible"
+          title="Vaqtni o'zgartirish"
+          trigger="click"
+          placement="bottom"
+        >
+          <template #content>
+            <a-input-number
+              placeholder=""
+              v-model:value="timeKiosk"
+              allow-clear
+              @keydown="handleTimeChange"
+            />
+            <div class="mt-2">
+              <a @click="hide" class="mr-3"> {{ $t('CANCEL') }}</a>
+              <a @click="hide"> {{ $t('SAVE') }}</a>
+            </div>
+          </template>
+          <a-button type="text" class="flex align-center">
+            <span class="mr-2">18 sekund</span>
+            <IconEdit />
+          </a-button>
+        </a-popover>
+
         <a-input
-          placeholder="Kanalni izlash..."
+          placeholder="Kioskni izlash..."
           v-model:value="search"
           allow-clear
           @keydown="handleSearch"
@@ -111,7 +140,7 @@ onMounted(() => {
           <template #icon>
             <IconPlus />
           </template>
-          {{ $t('ADD') }} 
+          {{ $t('ADD') }}
         </a-button>
       </a-space>
     </template>
@@ -122,5 +151,8 @@ onMounted(() => {
 <style scoped lang="scss">
 .select {
   width: 200px;
+}
+.timeChange {
+  width: 50px;
 }
 </style>
