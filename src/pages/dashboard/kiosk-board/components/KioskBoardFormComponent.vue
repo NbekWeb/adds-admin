@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import useCore from '@/store/core.pinia.js'
@@ -35,7 +35,8 @@ const formStates = ref({
   description: null,
   longitude: null,
   latitude: null,
-  timeConfigurations: []
+  timeConfigurations: [],
+  amount: null
 })
 
 const map = ref({
@@ -44,6 +45,8 @@ const map = ref({
   searching: false,
   options: []
 })
+
+const selectedTime = ref({ time: [], dayOfWeek: null })
 
 const rules = ref({
   name: [
@@ -73,8 +76,55 @@ const rules = ref({
       message: t('REQUIRED_FIELD'),
       trigger: 'blur'
     }
+  ],
+  timeConfigurations: [
+    {
+      validator: (rules, value) =>
+        value.length > 0
+          ? Promise.resolve()
+          : Promise.reject(new Error(t('REQUIRED_FIELD'))),
+      trigger: 'blur'
+    }
+  ],
+  amount: [
+    {
+      required: true,
+      message: t('REQUIRED_FIELD'),
+      trigger: 'blur'
+    }
   ]
 })
+
+const optionsWeek = ref([
+  {
+    value: 'MONDAY',
+    label: 'Dushanba'
+  },
+  {
+    value: 'TUESDAY',
+    label: 'Seshanba'
+  },
+  {
+    value: 'WEDNESDAY',
+    label: 'Chorshanba'
+  },
+  {
+    value: 'THURSDAY',
+    label: 'Payshanba'
+  },
+  {
+    value: 'FRIDAY',
+    label: 'Juma'
+  },
+  {
+    value: 'SATURDAY',
+    label: 'Shanba'
+  },
+  {
+    value: 'SUNDAY',
+    label: 'Yakshanba'
+  }
+])
 
 const { resetFields, validate, validateInfos } = useForm(formStates, rules)
 const findPlaceByLatLon = (lat, lon, callback) => {
@@ -188,12 +238,24 @@ const submitForm = () => {
         router.push({ name: 'DashboardKioskBoardListView' })
       }
     })
-    // , () => {
-    //       router.push('/dashboard/kiosk-board')
-    //       resetFields()
-    //       coreStore.loadingUrl.delete('kiosk-board/owner/form')
-    //     }
     .catch(() => {})
+}
+
+function resetTimeConfig() {
+  selectedTime.value.dayOfWeek = null
+  selectedTime.value.time = []
+}
+
+const addTimConfig = () => {
+  formStates.value.timeConfigurations.push({
+    startTime: selectedTime.value.time[0],
+    endTime: selectedTime.value.time[1],
+    dayOfWeek: selectedTime.value.dayOfWeek
+  })
+  optionsWeek.value = optionsWeek.value.filter(
+    (week) => week.value != selectedTime.value.dayOfWeek
+  )
+  resetTimeConfig()
 }
 
 onMounted(() => {
@@ -226,7 +288,7 @@ onMounted(() => {
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="14" :lg="24" :xl="12">
+                  <a-col :span="10">
                     <a-form-item
                       :label="$t('KIOSK_BOARD_NAME')"
                       v-bind="validateInfos.name"
@@ -238,7 +300,7 @@ onMounted(() => {
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="24" :md="14" :lg="24" :xl="12">
+                  <a-col :span="8">
                     <a-form-item
                       :label="$t('CATEGORY')"
                       v-bind="validateInfos.categoryId"
@@ -259,6 +321,18 @@ onMounted(() => {
                       />
                     </a-form-item>
                   </a-col>
+                  <a-col :span="6">
+                    <a-form-item
+                      :label="$t('KIOSK_BOARD_NAME')"
+                      v-bind="validateInfos.amount"
+                    >
+                      <a-input-number
+                        :addon-after="$t('SOUM')"
+                        v-model:value="formStates.amount"
+                        placeholder="Narxi"
+                      />
+                    </a-form-item>
+                  </a-col>
 
                   <a-col :span="24">
                     <a-form-item
@@ -272,6 +346,74 @@ onMounted(() => {
                         :maxlength="255"
                       />
                     </a-form-item>
+                  </a-col>
+                  <a-col
+                    :span="24"
+                    class="flex wrap mb-4"
+                    v-if="
+                      formStates.timeConfigurations &&
+                      formStates.timeConfigurations.length > 0
+                    "
+                  >
+                    <a-card
+                      size="small"
+                      v-for="(
+                        timeConfiguration, index
+                      ) in formStates.timeConfigurations"
+                      :key="index"
+                    >
+                      <strong class="mr-2">{{
+                        timeConfiguration.dayOfWeek
+                      }}</strong>
+                      {{ timeConfiguration.startTime }} -
+                      {{ timeConfiguration.endTime }}
+                    </a-card>
+                  </a-col>
+                  <a-col :span="12">
+                    <a-form-item
+                      :label="$t('LIVE_TIME')"
+                      v-bind="validateInfos.timeConfigurations"
+                    >
+                      <a-time-range-picker
+                        v-model:value="selectedTime.time"
+                        valueFormat="HH:mm"
+                        format="HH:mm"
+                        class="w-full"
+                        :placeholder="['boshlanishi', 'tugashi']"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="12">
+                    <a-form-item
+                      :label="$t('WEEK_SELECT')"
+                      v-bind="validateInfos.timeConfigurations"
+                    >
+                      <a-select
+                        placeholder="Hafta kuni"
+                        class="w-full"
+                        :options="optionsWeek"
+                        v-model:value="selectedTime.dayOfWeek"
+                      >
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col>
+                    <a-button @click="resetTimeConfig">
+                      {{ $t('CANCEL') }}
+                    </a-button>
+                  </a-col>
+                  <a-col>
+                    <a-button
+                      type="primary"
+                      @click="addTimConfig"
+                      :disabled="
+                        !(
+                          selectedTime.time.length > 0 && selectedTime.dayOfWeek
+                        )
+                      "
+                    >
+                      {{ $t('SAVE') }}
+                    </a-button>
                   </a-col>
                 </a-row>
               </loader-component>
@@ -336,4 +478,9 @@ onMounted(() => {
   </scrollbar-component>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.wrap {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+</style>

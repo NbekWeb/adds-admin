@@ -86,7 +86,8 @@ const useKioskBoard = defineStore('kiosk-board', {
           description: item.description,
           longitude: item.longitude,
           latitude: item.latitude,
-          timeConfigurations: []
+          timeConfigurations: item.timeConfigurations,
+          amount: item.amount
         }
       })
         .then(() => {
