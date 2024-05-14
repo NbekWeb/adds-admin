@@ -14,8 +14,7 @@ const useDuration = defineStore('duration', {
         url: 'duration-limit'
       })
         .then(({ data }) => {
-          this.duration = data.content
-          console.log(data)
+          this.duration = data
         })
         .catch((error) => {
           core.switchStatus(error)
@@ -28,7 +27,7 @@ const useDuration = defineStore('duration', {
       const core = useCore()
       core.loadingUrl.add('duration/update')
       api({
-        url: `board/update-status/${id}`,
+        url: 'duration-limit',
         method: 'PUT',
         data: {
           limitSeconds: time?.limitSeconds,
@@ -41,7 +40,6 @@ const useDuration = defineStore('duration', {
             type: 'success',
             locale: 'DURATION_CHANGED'
           })
-          callback()
         })
         .catch((error) => {
           core.switchStatus(error)

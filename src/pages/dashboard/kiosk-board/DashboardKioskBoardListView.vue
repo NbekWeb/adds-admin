@@ -5,6 +5,8 @@ import useKioskBoard from '@/store/kiosk-board.pinia.js'
 import { useRoute, useRouter } from 'vue-router'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import KioskBoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
+import DurationsDrawerComponent from '@/pages/dashboard/kiosk-board/components/DurationsDrawerComponent.vue'
+
 import { storeToRefs } from 'pinia'
 import useCore from '@/store/core.pinia.js'
 import useBoardCategory from '@/store/board-category.pinia.js'
@@ -57,6 +59,12 @@ function handleSearch() {
     handleChangeFilter()
   }, 500)
 }
+const open = ref(false)
+
+const showDrawer = () => {
+  open.value = true
+}
+
 onMounted(() => {
   boardPinia.getAllKioskBoardStatus(currentPage.value - 1)
   boardPinia.getAllKioskBoardStatus()
@@ -68,30 +76,6 @@ onMounted(() => {
   <page-header-component :title="$t('DashboardBoardListView')">
     <template #actions>
       <a-space>
-        <a-popover
-          v-model:open="visible"
-          title="Vaqtni o'zgartirish"
-          trigger="click"
-          placement="bottom"
-        >
-          <template #content>
-            <a-input-number
-              placeholder=""
-              v-model:value="timeKiosk"
-              allow-clear
-              @keydown="handleTimeChange"
-            />
-            <div class="mt-2">
-              <a @click="hide" class="mr-3"> {{ $t('CANCEL') }}</a>
-              <a @click="hide"> {{ $t('SAVE') }}</a>
-            </div>
-          </template>
-          <a-button type="text" class="flex align-center">
-            <span class="mr-2">18 sekund</span>
-            <IconEdit />
-          </a-button>
-        </a-popover>
-
         <a-input
           placeholder="Kioskni izlash..."
           v-model:value="search"
@@ -132,27 +116,33 @@ onMounted(() => {
             {{ item.localName }}
           </a-select-option>
         </a-select>
-        <a-button
-          type="primary"
-          class="btn"
-          @click="router.push({ name: 'DashboardKioskPostCreateFormView' })"
+        <a-button type="primary" @click="showDrawer">{{
+          $t('KIOSK_TIME')
+        }}</a-button>
+        <a-drawer
+          v-model:open="open"
+          root-class-name="kiosk-duration-drawer"
+          class="item-duration-drawer"
+          :title="$t('KIOSK_DURATIONS')"
+          placement="right"
         >
-          <template #icon>
-            <IconPlus />
-          </template>
-          {{ $t('ADD') }}
-        </a-button>
+          <durations-drawer-component />
+        </a-drawer>
       </a-space>
     </template>
   </page-header-component>
   <kiosk-board-table-component />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .select {
   width: 200px;
 }
 .timeChange {
   width: 50px;
+}
+
+.kiosk-duration-drawer .ant-drawer-content-wrapper {
+  width: 50% !important;
 }
 </style>
