@@ -133,6 +133,12 @@ const uz = {
   KIOSK_BOARD_NAME:'Kiosk Nomi',
   FIND_KIOSK_BOARD:'Kiosk Manzili',
   WEEK_SELECT:'Hafta kunini tanlang',
+  KIOSK_DURATIONS:'Kiosk Board Vaqtlari',
+  KIOSK_IMG_MAX:"Rasm qo'yilishi",
+  KIOSK_TEXT_MAX:"Text qo'yilishi",
+  KIOSK_VIDEO_MAX:"Videoning maksimal uzunligi ",
+  KIOSK_TIME:"Kiosk vaqtlari",
+  KIOSK_TIME_CHANGE:"Kiosk vaqtlarini o'zgartirish",
   // statuses
   EXPIRED: "Muddati o'tib ketgan",
   FAILED: 'Muvaffaqiyatsiz',
