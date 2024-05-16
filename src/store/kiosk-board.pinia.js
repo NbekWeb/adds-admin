@@ -72,6 +72,36 @@ const useKioskBoard = defineStore('kiosk-board', {
         .catch((error) => {
           core.switchStatus(error)
         })
+    },
+    createKioskBoard(item) {
+      const core = useCore()
+      core.loadingUrl.add('kiosk-board/create')
+      api({
+        url: 'kiosk-board',
+        method: 'POST',
+        data: {
+          ownerId: item.ownerId,
+          categoryId: item.categoryId,
+          name: item.name,
+          description: item.description,
+          longitude: item.longitude,
+          latitude: item.latitude,
+          timeConfigurations: item.timeConfigurations,
+          amount: item.amount
+        }
+      })
+        .then(() => {
+          core.setToast({
+            type: 'success',
+            locale: 'CHANNEL_STATUS_CHANGED_SUCCESSFULLY'
+          })
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('kiosk-board/create')
+        })
     }
   }
 })

@@ -16,6 +16,8 @@ const uz = {
   DashboardSettingsView: 'Sozlamalar',
   BoardConfigurationsView: "Ta'riflar",
   DashboardOrderFormView: "E'lon berish",
+  DashboardPetitionView:"Arizalar",
+  DashboardPetitionListView:"Arizalar ro'yxati",
 
   Help: 'Yordam',
   News: 'Xabar va yangilik',
@@ -28,6 +30,7 @@ const uz = {
   DashboardPostFormView: "Post qo'shish",
   DashboardNotFond: 'Sahifa topilmadi',
   DashboardBoardItemInfoView: "Kanal ma'lumotlari",
+  DashboardKioskPostCreateFormView: "Kiosk yaratish",
 
   //   validations
   REQUIRED_FIELD: 'Majburiy maydon',
@@ -126,6 +129,16 @@ const uz = {
   FILLING_UP_THE_USER_ACCOUNT: "Foydalanuvchi hisobini to'ldirish",
   NO_NOTIFICATIONS: 'Bildirishnomalar mavjud emas',
   NOTIFICATIONS: 'Bildirishnomalar',
+  KIOSK_BOARD_ADDRESS:'Kiosk Manzili',
+  KIOSK_BOARD_NAME:'Kiosk Nomi',
+  FIND_KIOSK_BOARD:'Kiosk Manzili',
+  WEEK_SELECT:'Hafta kunini tanlang',
+  KIOSK_DURATIONS:'Kiosk Board Vaqtlari',
+  KIOSK_IMG_MAX:"Rasm qo'yilishi",
+  KIOSK_TEXT_MAX:"Text qo'yilishi",
+  KIOSK_VIDEO_MAX:"Videoning maksimal uzunligi ",
+  KIOSK_TIME:"Kiosk vaqtlari",
+  KIOSK_TIME_CHANGE:"Kiosk vaqtlarini o'zgartirish",
   // statuses
   EXPIRED: "Muddati o'tib ketgan",
   FAILED: 'Muvaffaqiyatsiz',
@@ -174,6 +187,7 @@ const uz = {
   BOARD_TIME_CONFIGURATION_DELETED_SUCCESSFULLY:
     "Ta'rif muvafaqiyatli o'chirildi",
   POST_ADDED_SUCCESSFULLY: "Post muvafaqiyatli qo'shildi",
+  DURATION_CHANGED: "Vaqt muvafaqiyatli o'zgartirildi",
   POST_DELETED_SUCCESSFULLY: "Post muvafaqiyatli o'chirildi",
   DOU_YOU_WANT_TO_LOG_OUT: 'Tizimdan chiqmoqchimisiz?',
   INTERNAL_SERVER_ERROR:

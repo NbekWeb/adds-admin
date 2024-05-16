@@ -16,7 +16,7 @@ defineProps({
         ? 'processing'
         : status === 'ACTIVE'
           ? 'success'
-          : status === 'APPROVED '
+          : status === 'APPROVED'
             ? 'cyan'
             : status === 'EDITED'
               ? 'warning'

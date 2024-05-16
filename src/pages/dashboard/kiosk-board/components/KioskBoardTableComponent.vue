@@ -29,45 +29,38 @@ const columns = ref([
     dataIndex: 'id',
     key: 'id',
     width: 40
-    // fixed: 'left'
   },
   {
     title: 'NAME',
     dataIndex: 'name',
-    key: 'name'
-    // fixed: 'left'
+    key: 'name',
+    width: 100
   },
   {
     title: 'OWNER',
     dataIndex: 'owner',
-    key: 'owner'
+    key: 'owner',
+    width: 200
   },
   {
     title: 'DESCRIPTION',
     dataIndex: 'description',
     key: 'description',
-    width: 300
+    width: 500
   },
   {
     title: 'CATEGORY',
     dataIndex: 'category',
-    key: 'category'
+    key: 'category',
+    width:200
   },
   {
     title: 'STATUS',
     dataIndex: 'status',
     key: 'status',
-    width: 120,
+    width: 100,
     align: 'center'
-    // fixed: 'right'
   }
-  // {
-  //   title: 'ACTIONS',
-  //   key: 'action',
-  //   width: 100,
-  //   align: 'center',
-  //   fixed: 'right'
-  // }
 ])
 const pagination = computed(() => ({
   total: totalElements.value,
@@ -90,7 +83,7 @@ function handleChangeStatus(id, status) {
 }
 
 onMounted(() => {
-  boardPinia.getAllKioskBoards(currentPage.value-1)
+  boardPinia.getAllKioskBoards(currentPage.value - 1)
   boardPinia.getAllKioskBoardStatus()
 })
 </script>
@@ -116,41 +109,31 @@ onMounted(() => {
           {{ tableIndex(index, totalElements, currentPage - 1, size) }}
         </template>
         <template v-if="column.key === 'name'">
-          <a
-            :href="`https://${record.channelLink}`"
-            target="_blank"
-            rel="opener"
-            class="text-bold"
-          >
-            {{ record.name }}
-          </a>
+          {{ record.name }}
         </template>
         <template v-if="column.key === 'owner'">
           {{ record.owner.fullName }}
         </template>
         <template v-if="column.key === 'description'">
-          <a-popover title="Description">
+          <a-popover title="Description" placement="top" >
             <template #content>
               <p class="description-content">
                 {{ record.description }}
               </p>
             </template>
-            <span class="description">
-              {{ record.description }}
-            </span>
+            <p class="description">
+              {{ record.description }} 
+            </p>
           </a-popover>
         </template>
         <template v-if="column.key === 'category'">
           <span class="category">
             {{ record.category.name }}
-            
           </span>
         </template>
         <template v-if="column.key === 'status'">
-          
           <a-dropdown trigger="click" placement="bottom" arrow>
             <board-status-component :status="record.status.boardStatus" />
-            <!-- <p>{{ statuses }}</p> -->
             <template #overlay>
               <a-menu
                 @click="(event) => handleChangeStatus(record.id, event.key)"
@@ -186,6 +169,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+
 .description,
 .category {
   overflow: hidden;
@@ -194,6 +178,6 @@ onMounted(() => {
   -webkit-line-clamp: 1;
 }
 .description-content {
-  width: 300px;
+  width: 800px;
 }
 </style>

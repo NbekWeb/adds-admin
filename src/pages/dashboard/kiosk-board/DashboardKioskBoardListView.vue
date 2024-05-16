@@ -3,8 +3,10 @@ import PageHeaderComponent from '@/components/PageHeaderComponent.vue'
 import { computed, onMounted, ref } from 'vue'
 import useKioskBoard from '@/store/kiosk-board.pinia.js'
 import { useRoute, useRouter } from 'vue-router'
+import IconEdit from '@/components/icons/IconEdit.vue'
+import KioskBoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
+import DurationsDrawerComponent from '@/pages/dashboard/kiosk-board/components/DurationsDrawerComponent.vue'
 
-import BoardTableComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardTableComponent.vue'
 import { storeToRefs } from 'pinia'
 import useCore from '@/store/core.pinia.js'
 import useBoardCategory from '@/store/board-category.pinia.js'
@@ -26,8 +28,13 @@ const currentPage = computed(() =>
 const category = ref(null)
 const status = ref(null)
 const search = ref(null)
+const visible = ref(false)
 
 const timeout = ref()
+
+const hide = () => {
+  visible.value = false
+}
 
 function handleChangeFilter() {
   router.push({
@@ -52,6 +59,12 @@ function handleSearch() {
     handleChangeFilter()
   }, 500)
 }
+const open = ref(false)
+
+const showDrawer = () => {
+  open.value = true
+}
+
 onMounted(() => {
   boardPinia.getAllKioskBoardStatus(currentPage.value - 1)
   boardPinia.getAllKioskBoardStatus()
@@ -64,7 +77,7 @@ onMounted(() => {
     <template #actions>
       <a-space>
         <a-input
-          placeholder="Kanalni izlash..."
+          placeholder="Kioskni izlash..."
           v-model:value="search"
           allow-clear
           @keydown="handleSearch"
@@ -103,24 +116,33 @@ onMounted(() => {
             {{ item.localName }}
           </a-select-option>
         </a-select>
-        <a-button
-          type="primary"
-          class="btn"
-          @click="router.push({ name: 'DashboardKioskPostCreateFormView' })"
+        <a-button type="primary" @click="showDrawer">{{
+          $t('KIOSK_TIME')
+        }}</a-button>
+        <a-drawer
+          v-model:open="open"
+          root-class-name="kiosk-duration-drawer"
+          class="item-duration-drawer"
+          :title="$t('KIOSK_DURATIONS')"
+          placement="right"
         >
-          <template #icon>
-            <IconPlus />
-          </template>
-          {{ $t('ADD') }} sa1
-        </a-button>
+          <durations-drawer-component />
+        </a-drawer>
       </a-space>
     </template>
   </page-header-component>
-  <board-table-component />
+  <kiosk-board-table-component />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .select {
   width: 200px;
+}
+.timeChange {
+  width: 50px;
+}
+
+.kiosk-duration-drawer .ant-drawer-content-wrapper {
+  width: 50% !important;
 }
 </style>
