@@ -88,9 +88,12 @@ const pagination = computed(() => ({
 const { visibleDrawer } = storeToRefs(corePinia)
 const { orders, totalElements, size, totalPages } = storeToRefs(orderPinia)
 
-watch(()=>route.query.channel, (newValue) => {
-  selectedChannel.value =  newValue
-})
+watch(
+  () => route.query.channel,
+  (newValue) => {
+    selectedChannel.value = newValue
+  }
+)
 
 function handleTableChange(pag) {
   router.push({
@@ -111,7 +114,6 @@ function handleChangeStatus(id, status) {
   })
 }
 function viewPost(postId) {
-  console.log('on', selectedChannel.value)
   if (selectedChannel.value == 'kiosk') {
     orderPinia.getPostByIdKiosk(postId)
   } else {
@@ -123,7 +125,6 @@ function viewPost(postId) {
 
 <template>
   <loader-component loading-url="order/get/all">
-    {{ selectedChannel }}
     <a-table
       @change="handleTableChange"
       :columns="columns"

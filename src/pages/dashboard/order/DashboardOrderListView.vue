@@ -18,7 +18,6 @@ const currentPage = computed(() =>
 )
 
 const handleChange = (val) => {
-  console.log('val: ', val)
   router.push({ query: { channel: val } })
   if (val == 'kiosk') {
     orderPinia.getAllOrdersKiosk(0)
