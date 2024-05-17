@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { tableIndex } from '@/composables/index.js'
 import dayjs from 'dayjs'
@@ -21,6 +21,9 @@ const orderPinia = useOrder()
 const currentPage = computed(() =>
   route.query.page ? parseInt(route.query.page, 10) : 1
 )
+
+const selectedChannel = ref(route.query.channel)
+
 const columns = reactive([
   {
     title: 'INDEX',
@@ -85,13 +88,25 @@ const pagination = computed(() => ({
 const { visibleDrawer } = storeToRefs(corePinia)
 const { orders, totalElements, size, totalPages } = storeToRefs(orderPinia)
 
+watch(
+  () => route.query.channel,
+  (newValue) => {
+    selectedChannel.value = newValue
+  }
+)
+
 function handleTableChange(pag) {
   router.push({
     query: {
-      page: pag.current
+      page: pag.current,
+      channel: selectedChannel.value
     }
   })
-  orderPinia.getAllOrders(pag.current - 1)
+  if (selectedChannel.value == 'kiosk') {
+    orderPinia.getAllOrdersKiosk(pag.current - 1)
+  } else {
+    orderPinia.getAllOrdersTelegram(pag.current - 1)
+  }
 }
 function handleChangeStatus(id, status) {
   orderPinia.changeOrderStatus(id, status, () => {
@@ -99,7 +114,11 @@ function handleChangeStatus(id, status) {
   })
 }
 function viewPost(postId) {
-  orderPinia.getPostById(postId)
+  if (selectedChannel.value == 'kiosk') {
+    orderPinia.getPostByIdKiosk(postId)
+  } else {
+    orderPinia.getPostByIdTelegram(postId)
+  }
   visibleDrawer.value.add('post/get/one')
 }
 </script>
@@ -114,7 +133,7 @@ function viewPost(postId) {
       :pagination="totalPages > 1 ? pagination : false"
       row-key="username"
       size="middle"
-      :scroll="{ y: 'calc(100vh - 280px)', x: 'max-content' }"
+      :scroll="{ y: 'calc(100vh - 310px)', x: 'max-content' }"
       class="table-custom-class"
     >
       <template #headerCell="{ column }">
@@ -157,7 +176,10 @@ function viewPost(postId) {
         </template>
         <template v-if="column.key === 'actions'">
           <a-space>
-            <a-button class="btn" @click="viewPost(record.postId)">
+            <a-button
+              class="btn"
+              @click="viewPost(record.postId, selectedChannel)"
+            >
               <template #icon>
                 <IconMessageTextSquare />
               </template>
