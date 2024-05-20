@@ -8,7 +8,8 @@ const useOrder = defineStore('order', {
     size: 8,
     totalElements: 0,
     totalPages: 1,
-    post: null
+    post: null,
+    statusAll: []
   }),
   actions: {
     clearPost() {
@@ -92,6 +93,22 @@ const useOrder = defineStore('order', {
         })
         .finally(() => {
           core.loadingUrl.delete('post/get/one')
+        })
+    },
+    getAllStatus() {
+      const core = useCore()
+      core.loadingUrl.add('status/all')
+      api({
+        url: 'order/all-status'
+      })
+        .then(({ data }) => {
+          this.statusAll = data
+        })
+        .catch((e) => {
+          core.switchStatus(e)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('status/all')
         })
     },
     changeOrderStatus(id, status, callback) {
