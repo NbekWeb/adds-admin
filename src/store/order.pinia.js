@@ -14,11 +14,11 @@ const useOrder = defineStore('order', {
     clearPost() {
       this.post = null
     },
-    getAllOrders(page, status = null) {
+    getAllOrdersTelegram(page, status = null) {
       const core = useCore()
       core.loadingUrl.add('order/get/all')
       api({
-        url: 'order/dev',
+        url: `order/dev`,
         params: {
           page: page,
           size: this.size,
@@ -31,17 +31,58 @@ const useOrder = defineStore('order', {
           this.totalPages = data.totalPages
         })
         .catch((error) => {
+          console.log(error)
           core.switchStatus(error)
         })
         .finally(() => {
           core.loadingUrl.delete('order/get/all')
         })
     },
-    getPostById(id) {
+    getAllOrdersKiosk(page, status = null) {
+      const core = useCore()
+      core.loadingUrl.add('order/get/all')
+      api({
+        url: `kiosk-order/dev`,
+        params: {
+          page: page,
+          size: this.size,
+          status: status
+        }
+      })
+        .then(({ data }) => {
+          this.orders = data.content
+          this.totalElements = data.totalElements
+          this.totalPages = data.totalPages
+        })
+        .catch((error) => {
+          console.log(error)
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('order/get/all')
+        })
+    },
+    getPostByIdTelegram(id) {
       const core = useCore()
       core.loadingUrl.add('post/get/one')
       api({
         url: `post/${id}`
+      })
+        .then(({ data }) => {
+          this.post = data
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('post/get/one')
+        })
+    },
+    getPostByIdKiosk(id) {
+      const core = useCore()
+      core.loadingUrl.add('post/get/one')
+      api({
+        url: `kiosk-post/${id}`
       })
         .then(({ data }) => {
           this.post = data
