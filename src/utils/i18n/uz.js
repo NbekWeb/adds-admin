@@ -159,6 +159,7 @@ const uz = {
   AWAITING_BOARD_OWNER: 'Kanal egasi tasdiqlashi kutilmoqda',
   ACCEPTED: 'Qabul qilingan',
   REJECTED_BY_BOARD_OWNER: 'Kanal egasi tomonidan rad etilgan',
+  ALL_STATUS:"Barchasi",
   // descriptions
   LOGIN_PAGE_DESCRIPTION: 'Moderator',
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
