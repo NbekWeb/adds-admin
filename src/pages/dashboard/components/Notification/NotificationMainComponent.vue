@@ -81,6 +81,11 @@ onMounted(() => {
                 :key="index"
                 v-model:open="open"
               />
+              <a-skeleton
+                :paragraph="{ rows: 2 }"
+                active
+                :loading="loadingUrl.has('get/all/notifications')"
+              />
             </template>
             <template v-else>
               <div class="h-full flex align-center justify-center">
