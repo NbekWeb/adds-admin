@@ -59,7 +59,6 @@ const useNotifications = defineStore('notifications', {
             }
           })
 
-          console.log(this.newNotifications)
         })
         .catch((error) => {
           core.switchStatus(error)
