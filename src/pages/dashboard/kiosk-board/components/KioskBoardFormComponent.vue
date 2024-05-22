@@ -12,6 +12,7 @@ import { useI18n } from 'vue-i18n'
 import { debounce } from '@/composables/index.js'
 
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import MoneyInputComponent from '@/components/MoneyInputComponent.vue'
 import ScrollbarComponent from '@/components/ScrollbarComponent.vue'
 import KioskBoardMapComponent from '@/pages/dashboard/kiosk-board/components/KioskBoardMapComponent.vue'
 
@@ -288,7 +289,7 @@ onMounted(() => {
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="10">
+                  <a-col :span="12">
                     <a-form-item
                       :label="$t('KIOSK_BOARD_NAME')"
                       v-bind="validateInfos.name"
@@ -300,7 +301,7 @@ onMounted(() => {
                     </a-form-item>
                   </a-col>
 
-                  <a-col :span="8">
+                  <a-col :span="12">
                     <a-form-item
                       :label="$t('CATEGORY')"
                       v-bind="validateInfos.categoryId"
@@ -321,15 +322,14 @@ onMounted(() => {
                       />
                     </a-form-item>
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="12">
                     <a-form-item
-                      :label="$t('KIOSK_BOARD_NAME')"
+                      :label="$t('KIOSK_BOARD_PRICE')"
                       v-bind="validateInfos.amount"
                     >
-                      <a-input-number
-                        :addon-after="$t('SOUM')"
+                      <money-input-component
                         v-model:value="formStates.amount"
-                        placeholder="Narxi"
+                        :placeholder="$t('AMOUNT')"
                       />
                     </a-form-item>
                   </a-col>
