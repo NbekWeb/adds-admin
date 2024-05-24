@@ -161,6 +161,7 @@ const uz = {
   ACCEPTED: 'Qabul qilingan',
   REJECTED_BY_BOARD_OWNER: 'Kanal egasi tomonidan rad etilgan',
   ALL_STATUS: 'Barchasi',
+  REJECTED_BY_MODERATOR: 'Moderator tomonidan rad etilgan',
   // descriptions
   LOGIN_PAGE_DESCRIPTION: 'Moderator',
   ENTER_YOUR_NUMBER_TO_LOGIN: 'Tizimga kirish uchun raqamingizni kiriting',
