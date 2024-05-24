@@ -109,12 +109,12 @@ orderPinia.getAllStatus()
         @change="handleChangeStatus"
         class="ml-3"
       >
-        <a-select-option value="all"> {{ $t('ALL_STATUS') }}</a-select-option>
+        <a-select-option value="all"> {{ $t('ALL_STATUS') }} </a-select-option>
         <a-select-option
           v-for="(status, i) in orderPinia.statusAll"
           :key="i"
           :value="status.orderStatus"
-          >{{ status.localName }}</a-select-option
+          >{{ status.localName }} </a-select-option
         >
       </a-select>
 
