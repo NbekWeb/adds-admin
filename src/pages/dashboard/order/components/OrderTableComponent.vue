@@ -109,9 +109,15 @@ function handleTableChange(pag) {
   }
 }
 function handleChangeStatus(id, status) {
-  orderPinia.changeOrderStatus(id, status, () => {
-    orderPinia.getAllOrders(currentPage.value - 1)
-  })
+  if (selectedChannel.value == 'telegram') {
+    orderPinia.changeOrderStatus(id, status, () => {
+      orderPinia.getAllOrdersTelegram(currentPage.value - 1)
+    })
+  } else {
+    orderPinia.changeKioskOrderStatus(id, status, () => {
+      orderPinia.getAllOrdersKiosk(currentPage.value - 1)
+    })
+  }
 }
 function viewPost(postId) {
   if (selectedChannel.value == 'kiosk') {
