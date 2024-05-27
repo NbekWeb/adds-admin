@@ -19,7 +19,7 @@ const useNotifications = defineStore('notifications', {
         url: 'notification',
         params: {
           page: page,
-          size: 6,
+          size: 10,
           isRead: null,
           type: 'MODERATOR'
         }
@@ -59,7 +59,6 @@ const useNotifications = defineStore('notifications', {
             }
           })
 
-          console.log(this.newNotifications)
         })
         .catch((error) => {
           core.switchStatus(error)

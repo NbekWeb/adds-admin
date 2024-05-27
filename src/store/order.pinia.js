@@ -130,6 +130,26 @@ const useOrder = defineStore('order', {
         .finally(() => {
           core.loadingUrl.delete('order/status/update')
         })
+    },
+    changeKioskOrderStatus(id, status, callback) {
+      const core = useCore()
+      core.loadingUrl.add('order/status/update')
+      api({
+        url: `kiosk-order/approve/${id}`,
+        method: 'POST',
+        data: {
+          status: status
+        }
+      })
+        .then(() => {
+          callback()
+        })
+        .catch((error) => {
+          core.switchStatus(error)
+        })
+        .finally(() => {
+          core.loadingUrl.delete('order/status/update')
+        })
     }
   }
 })
