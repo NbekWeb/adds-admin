@@ -109,7 +109,7 @@ onMounted(() => {
             @click="
               router.push({
                 name: 'DashboardKioskPostCreateFormView',
-                params: { id: record.id }
+                params: { id: record.owner.id }
               })
             "
           >
