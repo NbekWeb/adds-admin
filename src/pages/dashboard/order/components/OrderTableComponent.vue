@@ -22,7 +22,7 @@ const currentPage = computed(() =>
   route.query.page ? parseInt(route.query.page, 10) : 1
 )
 
-const selectedChannel = ref(route.query.channel)
+const selectedChannel = computed(() => route.query.channel || 'telegram')
 
 const columns = reactive([
   {
@@ -88,12 +88,6 @@ const pagination = computed(() => ({
 const { visibleDrawer } = storeToRefs(corePinia)
 const { orders, totalElements, size, totalPages } = storeToRefs(orderPinia)
 
-watch(
-  () => route.query.channel,
-  (newValue) => {
-    selectedChannel.value = newValue
-  }
-)
 
 function handleTableChange(pag) {
   router.push({
@@ -102,14 +96,14 @@ function handleTableChange(pag) {
       channel: selectedChannel.value
     }
   })
-  if (selectedChannel.value == 'kiosk') {
+  if (selectedChannel.value === 'kiosk') {
     orderPinia.getAllOrdersKiosk(pag.current - 1)
   } else {
     orderPinia.getAllOrdersTelegram(pag.current - 1)
   }
 }
 function handleChangeStatus(id, status) {
-  if (selectedChannel.value == 'telegram') {
+  if (selectedChannel.value === 'telegram') {
     orderPinia.changeOrderStatus(id, status, () => {
       orderPinia.getAllOrdersTelegram(currentPage.value - 1)
     })
