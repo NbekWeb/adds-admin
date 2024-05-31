@@ -35,6 +35,18 @@ const openNotification = async () => {
     }, index * 1000)
   })
 }
+watch(newNotifications, () => {
+  console.log('newNotifications watch',newNotifications)
+  openNotification()
+})
+watch(count, (newValue, oldValue) => {
+  console.log('newValue: ', newValue)
+  console.log('oldValue: ', oldValue)
+  if (count.value) {
+    notificationPinia.getNotifications(0)
+    notificationPinia.getUnreadNotifications()
+  }
+})
 function checkNotifications() {
   notificationPinia.checkNotifications()
 }
