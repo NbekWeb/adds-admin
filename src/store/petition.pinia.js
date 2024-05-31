@@ -5,9 +5,10 @@ import useCore from '@/store/core.pinia.js'
 const usePetition = defineStore('petition', {
   state: () => ({
     petitions: [],
-    size: 8,
     totalElements: 0,
-    totalPages: 1
+    totalPages: 1,
+    page: 0,
+    size: 10
   }),
   actions: {
     getAllKioskBoards(page) {
@@ -16,11 +17,14 @@ const usePetition = defineStore('petition', {
       api({
         url: 'petition',
         params: {
-          page: page
+          page,
+          size: this.size
         }
       })
         .then(({ data }) => {
+          this.totalPages = data.totalPages
           this.petitions = data.content
+          this.totalElements = data.totalElements
         })
         .catch((error) => {
           core.switchStatus(error)
@@ -28,7 +32,7 @@ const usePetition = defineStore('petition', {
         .finally(() => {
           core.loadingUrl.delete('petition')
         })
-    },
+    }
   }
 })
 export default usePetition

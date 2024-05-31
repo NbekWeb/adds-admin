@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import useCore from '@/store/core.pinia.js'
@@ -25,10 +25,9 @@ const coreStore = useCore()
 const categoryStore = useBoardCategories()
 const kioskBoardStore = useKioskBoard()
 
-const { collapsed, loadingUrl } = storeToRefs(coreStore)
+const { collapsed, loadingUrl, visibleDrawer } = storeToRefs(coreStore)
 const { categories } = storeToRefs(categoryStore)
 
-const kioskBoardId = ref(null)
 const mapAddress = ref(null)
 const formStates = ref({
   categoryId: null,
@@ -152,10 +151,7 @@ const findPlaceByLatLon = (lat, lon, callback) => {
       callback()
     })
     .catch((error) => {
-      coreStore.setToast({
-        locale: error?.response?.message,
-        type: 'error'
-      })
+      coreStore.switchStatus(error)
     })
 }
 
@@ -219,25 +215,12 @@ const changeMap = (e) => {
 const submitForm = () => {
   validate()
     .then(() => {
-      if (kioskBoardId.value) {
-        coreStore.loadingUrl.add('kiosk-board/owner/form')
-        kioskBoardStore.updateBoard(
-          kioskBoardId.value,
-          formStates.value,
-          () => {
-            router.push('/dashboard/kiosk-board')
-            resetFields()
-            coreStore.loadingUrl.delete('kiosk-board/owner/form')
-          }
-        )
-      } else {
-        coreStore.loadingUrl.add('kiosk-board/owner/form')
-        kioskBoardStore.createKioskBoard({
-          ...formStates.value,
-          ownerId: route.params.id
-        })
-        router.push({ name: 'DashboardKioskBoardListView' })
-      }
+      coreStore.loadingUrl.add('kiosk-board/owner/form')
+      kioskBoardStore.createKioskBoard({
+        ...formStates.value,
+        ownerId: route.params.id
+      })
+      router.push({ name: 'DashboardKioskBoardListView' })
     })
     .catch(() => {})
 }
@@ -245,6 +228,7 @@ const submitForm = () => {
 function resetTimeConfig() {
   selectedTime.value.dayOfWeek = null
   selectedTime.value.time = []
+  coreStore.visibleDrawer.delete('time/form')
 }
 
 const addTimConfig = () => {
@@ -267,213 +251,233 @@ onMounted(() => {
 <template>
   <scrollbar-component height="calc(100vh - 145px)">
     <template #content v-if="true">
-      <loader-component loading-url="kiosk-board/owner/form">
-        <a-form layout="vertical" @submit.prevent="submitForm">
-          <a-row :gutter="[20, 10]">
-            <a-col
-              :span="24"
-              :sm="20"
-              :md="collapsed ? 10 : 24"
-              :lg="10"
-              :xl="12"
-            >
-              <loader-component loading-url="get/kiosk-board/map-info">
-                <a-row :gutter="[10, 10]">
-                  <a-col :span="24">
-                    <a-form-item :label="$t('KIOSK_BOARD_ADDRESS')">
-                      <a-textarea
-                        readonly
-                        v-model:value="mapAddress"
-                        :placeholder="$t('KIOSK_BOARD_ADDRESS')"
-                      />
-                    </a-form-item>
-                  </a-col>
-
-                  <a-col :span="12">
-                    <a-form-item
-                      :label="$t('KIOSK_BOARD_NAME')"
-                      v-bind="validateInfos.name"
-                    >
-                      <a-input
-                        v-model:value="formStates.name"
-                        placeholder="Kiosk-Board nomi"
-                      />
-                    </a-form-item>
-                  </a-col>
-
-                  <a-col :span="12">
-                    <a-form-item
-                      :label="$t('CATEGORY')"
-                      v-bind="validateInfos.categoryId"
-                    >
-                      <a-tree-select
-                        v-model:value="formStates.categoryId"
-                        show-search
-                        :placeholder="$t('SELECT_CATEGORY')"
-                        :dropdown-style="{
-                          maxHeight: '400px',
-                          overflow: 'auto'
-                        }"
-                        allow-clear
-                        tree-default-expand-all
-                        tree-node-filter-prop="label"
-                        :tree-data-simple-mode="[categories]"
-                        :tree-data="categories"
-                      />
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-form-item
-                      :label="$t('KIOSK_BOARD_PRICE')"
-                      v-bind="validateInfos.amount"
-                    >
-                      <money-input-component
-                        v-model:value="formStates.amount"
-                        :placeholder="$t('AMOUNT')"
-                      />
-                    </a-form-item>
-                  </a-col>
-
-                  <a-col :span="24">
-                    <a-form-item
-                      :label="$t('DESCRIPTION')"
-                      v-bind="validateInfos.description"
-                    >
-                      <a-textarea
-                        v-model:value="formStates.description"
-                        :placeholder="$t('DESCRIPTION')"
-                        style="height: 150px"
-                        :maxlength="255"
-                      />
-                    </a-form-item>
-                  </a-col>
-                  <a-col
-                    :span="24"
-                    class="flex wrap mb-4"
-                    v-if="
-                      formStates.timeConfigurations &&
-                      formStates.timeConfigurations.length > 0
-                    "
-                  >
-                    <a-card
-                      size="small"
-                      v-for="(
-                        timeConfiguration, index
-                      ) in formStates.timeConfigurations"
-                      :key="index"
-                    >
-                      <strong class="mr-2">{{
-                        timeConfiguration.dayOfWeek
-                      }}</strong>
-                      {{ timeConfiguration.startTime }} -
-                      {{ timeConfiguration.endTime }}
-                    </a-card>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-form-item
-                      :label="$t('LIVE_TIME')"
-                      v-bind="validateInfos.timeConfigurations"
-                    >
-                      <a-time-range-picker
-                        v-model:value="selectedTime.time"
-                        valueFormat="HH:mm"
-                        format="HH:mm"
-                        class="w-full"
-                        :placeholder="['boshlanishi', 'tugashi']"
-                      />
-                    </a-form-item>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-form-item
-                      :label="$t('WEEK_SELECT')"
-                      v-bind="validateInfos.timeConfigurations"
-                    >
-                      <a-select
-                        placeholder="Hafta kuni"
-                        class="w-full"
-                        :options="optionsWeek"
-                        v-model:value="selectedTime.dayOfWeek"
-                      >
-                      </a-select>
-                    </a-form-item>
-                  </a-col>
-                  <a-col>
-                    <a-button @click="resetTimeConfig">
-                      {{ $t('CANCEL') }}
-                    </a-button>
-                  </a-col>
-                  <a-col>
-                    <a-button
-                      type="primary"
-                      @click="addTimConfig"
-                      :disabled="
-                        !(
-                          selectedTime.time.length > 0 && selectedTime.dayOfWeek
-                        )
-                      "
-                    >
-                      {{ $t('SAVE') }}
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </loader-component>
-            </a-col>
-            <a-col
-              :span="24"
-              :sm="20"
-              :md="collapsed ? 14 : 24"
-              :lg="14"
-              :xl="12"
-              class="pr-4"
-            >
-              <a-form-item v-bind="validateInfos.longitude">
-                <kiosk-board-map-component
-                  @change="changeMap"
-                  :markers="map.maker"
-                >
-                  <template #button>
-                    <div class="flex text-start" style="max-width: 400px">
-                      <a-select
-                        show-search
-                        v-model:value="map.name"
-                        :placeholder="$t('FIND_KIOSK_BOARD')"
-                        :filter-option="false"
-                        :not-found-content="map.searching ? undefined : null"
-                        :default-active-first-option="false"
-                        @search="searchingMap"
-                        @change="(e) => handleClickMapOption(e)"
-                      >
-                        <template v-if="map.searching" #notFoundContent>
-                          <a-spin size="small" />
-                        </template>
-                        <a-select-option
-                          v-for="option in map?.options"
-                          :key="option.value"
-                          :value="option.value"
-                        >
-                          {{ option.label }}
-                        </a-select-option>
-                      </a-select>
-                    </div>
-                  </template>
-                </kiosk-board-map-component>
-              </a-form-item>
-              <a-row :gutter="10" class="mt-4 flex justify-end pb-4">
-                <a-col>
-                  <a-button @click="$router.back()">
-                    {{ $t('BACK') }}
-                  </a-button>
+      <a-form
+        layout="vertical"
+        @submit.prevent="submitForm"
+        class="h-full flex flex-column"
+      >
+        <a-row :gutter="[20, 10]">
+          <a-col
+            :span="24"
+            :sm="20"
+            :md="collapsed ? 10 : 24"
+            :lg="10"
+            :xl="12"
+          >
+            <loader-component loading-url="get/kiosk-board/map-info">
+              <a-row :gutter="[10, 10]">
+                <a-col :span="24">
+                  <a-form-item :label="$t('KIOSK_BOARD_ADDRESS')">
+                    <a-textarea
+                      readonly
+                      v-model:value="mapAddress"
+                      :placeholder="$t('KIOSK_BOARD_ADDRESS')"
+                    />
+                  </a-form-item>
                 </a-col>
-                <a-col>
-                  <a-button type="primary" @click="submitForm">
-                    {{ $t('SAVE') }}
-                  </a-button>
+
+                <a-col :span="12">
+                  <a-form-item
+                    :label="$t('KIOSK_BOARD_NAME')"
+                    v-bind="validateInfos.name"
+                  >
+                    <a-input
+                      v-model:value="formStates.name"
+                      placeholder="Kiosk-Board nomi"
+                    />
+                  </a-form-item>
+                </a-col>
+
+                <a-col :span="12">
+                  <a-form-item
+                    :label="$t('CATEGORY')"
+                    v-bind="validateInfos.categoryId"
+                  >
+                    <a-tree-select
+                      v-model:value="formStates.categoryId"
+                      show-search
+                      :placeholder="$t('SELECT_CATEGORY')"
+                      :dropdown-style="{
+                        maxHeight: '400px',
+                        overflow: 'auto'
+                      }"
+                      allow-clear
+                      tree-default-expand-all
+                      tree-node-filter-prop="label"
+                      :tree-data-simple-mode="[categories]"
+                      :tree-data="categories"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item
+                    :label="$t('KIOSK_BOARD_PRICE')"
+                    v-bind="validateInfos.amount"
+                  >
+                    <money-input-component
+                      v-model:value="formStates.amount"
+                      :placeholder="$t('AMOUNT')"
+                    />
+                  </a-form-item>
+                </a-col>
+
+                <a-col :span="24">
+                  <a-form-item
+                    :label="$t('DESCRIPTION')"
+                    v-bind="validateInfos.description"
+                  >
+                    <a-textarea
+                      v-model:value="formStates.description"
+                      :placeholder="$t('DESCRIPTION')"
+                      style="height: 150px"
+                      :maxlength="255"
+                    />
+                  </a-form-item>
                 </a-col>
               </a-row>
+            </loader-component>
+          </a-col>
+          <a-col
+            :span="24"
+            :sm="20"
+            :md="collapsed ? 14 : 24"
+            :lg="14"
+            :xl="12"
+            class="pr-4"
+          >
+            <a-form-item v-bind="validateInfos.longitude">
+              <kiosk-board-map-component
+                @change="changeMap"
+                :markers="map.maker"
+              >
+                <template #button>
+                  <div class="flex text-start" style="max-width: 400px">
+                    <a-select
+                      show-search
+                      v-model:value="map.name"
+                      :placeholder="$t('FIND_KIOSK_BOARD')"
+                      :filter-option="false"
+                      :not-found-content="map.searching ? undefined : null"
+                      :default-active-first-option="false"
+                      @search="searchingMap"
+                      @change="(e) => handleClickMapOption(e)"
+                    >
+                      <template v-if="map.searching" #notFoundContent>
+                        <a-spin size="small" />
+                      </template>
+                      <a-select-option
+                        v-for="option in map?.options"
+                        :key="option.value"
+                        :value="option.value"
+                      >
+                        {{ option.label }}
+                      </a-select-option>
+                    </a-select>
+                  </div>
+                </template>
+              </kiosk-board-map-component>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="24" class="flex" v-if="optionsWeek.length > 0">
+            <a-form-item
+              v-bind="validateInfos.description"
+              :label="$t('BOARD_TIME_CONFIGURATIONS')"
+            >
+              <a-button
+                @click="visibleDrawer.add('time/form')"
+                class="btn w-full"
+              >
+                <IconPlus />
+                {{ $t('ADD_NEW_TIME') }}
+              </a-button>
+            </a-form-item>
+          </a-col>
+          <a-col
+            :span="24"
+            class="flex wrap mb-4"
+            v-if="
+              formStates.timeConfigurations &&
+              formStates.timeConfigurations.length > 0
+            "
+          >
+            <a-card
+              size="small"
+              v-for="(
+                timeConfiguration, index
+              ) in formStates.timeConfigurations"
+              :key="index"
+            >
+              <strong class="mr-2">{{ timeConfiguration.dayOfWeek }}</strong>
+              {{ timeConfiguration.startTime }} -
+              {{ timeConfiguration.endTime }}
+            </a-card>
+          </a-col>
+          <a-modal
+            centered
+            width="450px"
+            :title="$t('ADD_NEW_TIME')"
+            destroy-on-close
+            :footer="null"
+            :open="visibleDrawer.has('time/form')"
+            @cancel="visibleDrawer.delete('time/form')"
+          >
+            <a-form-item
+              :label="$t('LIVE_TIME')"
+              v-bind="validateInfos.timeConfigurations"
+            >
+              <a-time-range-picker
+                v-model:value="selectedTime.time"
+                valueFormat="HH:mm"
+                format="HH:mm"
+                class="w-full"
+                :placeholder="['boshlanishi', 'tugashi']"
+              />
+            </a-form-item>
+
+            <a-form-item
+              :label="$t('WEEK_SELECT')"
+              v-bind="validateInfos.timeConfigurations"
+            >
+              <a-select
+                placeholder="Hafta kuni"
+                class="w-full"
+                :options="optionsWeek"
+                v-model:value="selectedTime.dayOfWeek"
+              >
+              </a-select>
+            </a-form-item>
+            <div class="flex justify-between">
+              <a-button @click="resetTimeConfig">
+                {{ $t('CANCEL') }}
+              </a-button>
+
+              <a-button
+                type="primary"
+                @click="addTimConfig"
+                :disabled="
+                  !(selectedTime.time.length > 0 && selectedTime.dayOfWeek)
+                "
+              >
+                {{ $t('SAVE') }}
+              </a-button>
+            </div>
+          </a-modal>
+          <a-row :gutter="10" class="flex justify-end w-full pb-4">
+            <a-col>
+              <a-button @click="$router.back()">
+                {{ $t('BACK') }}
+              </a-button>
+            </a-col>
+            <a-col>
+              <a-button type="primary" @click="submitForm">
+                {{ $t('SAVE') }}
+              </a-button>
             </a-col>
           </a-row>
-        </a-form>
-      </loader-component>
+        </a-row>
+      </a-form>
     </template>
   </scrollbar-component>
 </template>

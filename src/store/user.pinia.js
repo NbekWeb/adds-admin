@@ -6,7 +6,7 @@ const useUser = defineStore('user', {
   state: () => ({
     users: [],
     page: 0,
-    size: 8,
+    size: 10,
     totalElements: 0,
     totalPages: 1,
     form: {

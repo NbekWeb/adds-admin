@@ -44,7 +44,6 @@ const click = (e) => {
 </template>
 
 <style lang="scss" scoped>
-//@import '@/assets/styles/breakpoints.scss';
 
 .map-block {
   position: relative;

@@ -1,12 +1,13 @@
 <script setup>
 import IconBell from '@/components/icons/IconBell.vue'
-import { onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import useNotifications from '@/store/notifications.pinia.js'
 import { storeToRefs } from 'pinia'
 import { notification } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import NotificationItem from '@/pages/dashboard/components/Notification/NotificationItem.vue'
 import ScrollbarComponent from '@/components/ScrollbarComponent.vue'
+
 import useCore from '@/store/core.pinia.js'
 
 const { t } = useI18n()
@@ -20,6 +21,8 @@ const { notifications, totalPages, count, newNotifications } =
 const currentPage = ref(0)
 const open = ref(false)
 const timeOut = ref()
+const notificationInterval = ref()
+
 const openNotification = async () => {
   newNotifications.value.forEach((item, index) => {
     timeOut.value = setTimeout(() => {
@@ -35,7 +38,6 @@ const openNotification = async () => {
 function checkNotifications() {
   notificationPinia.checkNotifications()
 }
-
 watch(newNotifications, () => {
   openNotification()
 })
@@ -54,7 +56,11 @@ onMounted(() => {
   notificationPinia.getUnreadNotifications()
   notificationPinia.getNotifications(0)
   checkNotifications()
-  setInterval(checkNotifications, 60000)
+  notificationInterval.value = setInterval(checkNotifications, 60000)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(notificationInterval.value)
 })
 </script>
 
@@ -83,10 +89,10 @@ onMounted(() => {
                 v-model:open="open"
               />
               <a-skeleton
-                :paragraph="{ rows: 2,width:'100%' }"
+                :paragraph="{ rows: 2, width: '100%' }"
                 active
                 :loading="loadingUrl.has('get/all/notifications')"
-                />
+              />
             </template>
             <template v-else>
               <div class="h-full flex align-center justify-center">
@@ -112,19 +118,19 @@ onMounted(() => {
   </a-popover>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .notification-content {
   min-width: 400px;
   max-width: 300px;
   min-height: 200px;
+
+  &:deep(.ant-skeleton-title) {
+    display: none !important;
+  }
 }
 .badge-count {
   &:deep(.ant-badge-count) {
     background-color: #0020c2;
   }
-}
-
-.ant-skeleton-title {
-  display: none !important;
 }
 </style>

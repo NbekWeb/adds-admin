@@ -11,9 +11,12 @@ import LoaderComponent from '@/components/LoaderComponent.vue'
 import StatusTagComponent from '@/components/StatusTagComponent.vue'
 import IconMessageTextSquare from '@/components/icons/IconMessageTextSquare.vue'
 import IconEye from '@/components/icons/IconEye.vue'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const route = useRoute()
+
+const { t } = useI18n()
 
 const corePinia = useCore()
 const orderPinia = useOrder()
@@ -82,12 +85,14 @@ const statuses = ref([
 const pagination = computed(() => ({
   total: totalElements.value,
   current: currentPage.value,
-  pageSize: size.value
+  pageSize: size.value,
+  showSizeChanger: false,
+  hideOnSinglePage: true,
+  showTotal: (total) => `${t('TOTAL')}: ${total}`
 }))
 
-const { visibleDrawer } = storeToRefs(corePinia)
+const { visibleDrawer, loadingUrl } = storeToRefs(corePinia)
 const { orders, totalElements, size, totalPages } = storeToRefs(orderPinia)
-
 
 function handleTableChange(pag) {
   router.push({
@@ -124,76 +129,79 @@ function viewPost(postId) {
 </script>
 
 <template>
-  <loader-component loading-url="order/get/all">
-    <a-table
-      @change="handleTableChange"
-      :columns="columns"
-      bordered
-      :data-source="orders"
-      :pagination="totalPages > 1 ? pagination : false"
-      row-key="username"
-      size="middle"
-      :scroll="{ y: 'calc(100vh - 310px)', x: 'max-content' }"
-      class="table-custom-class"
-    >
-      <template #headerCell="{ column }">
-        {{ $t(column.title) }}
+  <a-table
+    @change="handleTableChange"
+    :columns="columns"
+    :loading="loadingUrl.has('order/get/all')"
+    bordered
+    :data-source="orders"
+    :pagination="pagination"
+    row-key="username"
+    size="middle"
+    :scroll="{ y: 'calc(100vh - 350px)', x: 'max-content' }"
+    class="table-custom-class"
+  >
+    <template #headerCell="{ column }">
+      {{ $t(column.title) }}
+    </template>
+    <template #bodyCell="{ column, record, index }">
+      <template v-if="column.key === 'id'">
+        {{ tableIndex(index, totalElements, currentPage - 1, size) }}
       </template>
-      <template #bodyCell="{ column, record, index }">
-        <template v-if="column.key === 'id'">
-          {{ tableIndex(index, totalElements, currentPage - 1, size) }}
-        </template>
-        <template v-if="column.key === 'customer'">
-          {{ record.user.fullName }}
-        </template>
-        <template v-if="column.key === 'status'">
-          <a-dropdown
-            trigger="click"
-            placement="bottom"
-            arrow
-            :disabled="record.status !== 'PENDING'"
-          >
-            <status-tag-component
-              :class="{ pointer: record.status === 'PENDING' }"
-              :status="record.status"
-            />
-            <template #overlay>
-              <a-menu
-                @click="(event) => handleChangeStatus(record.id, event.key)"
-              >
-                <a-menu-item v-for="status in statuses" :key="status.value">
-                  {{ $t(status.label) }}
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </template>
-        <template v-if="column.key === 'createdDate'">
-          {{ dayjs(record.createdDate).format('DD.MM.YYYY') }}
-        </template>
-        <template v-if="column.key === 'totalAmount'">
-          {{ amount(record.totalAmount) }}
-        </template>
-        <template v-if="column.key === 'actions'">
-          <a-space>
-            <a-button
-              class="btn"
-              @click="viewPost(record.postId, selectedChannel)"
+      <template v-if="column.key === 'customer'">
+        {{ record.user.fullName }}
+      </template>
+      <template v-if="column.key === 'status'">
+        <a-dropdown
+          trigger="click"
+          placement="bottom"
+          arrow
+          :disabled="record.status !== 'PENDING'"
+        >
+          <status-tag-component
+            :class="{ pointer: record.status === 'PENDING' }"
+            :status="record.status"
+          />
+          <template #overlay>
+            <a-menu
+              @click="(event) => handleChangeStatus(record.id, event.key)"
             >
-              <template #icon>
-                <IconMessageTextSquare />
-              </template>
-            </a-button>
-            <a-button class="btn">
-              <template #icon>
-                <IconEye />
-              </template>
-            </a-button>
-          </a-space>
-        </template>
+              <a-menu-item v-for="status in statuses" :key="status.value">
+                {{ $t(status.label) }}
+              </a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
       </template>
-    </a-table>
-  </loader-component>
+      <template v-if="column.key === 'createdDate'">
+        {{ dayjs(record.createdDate).format('DD.MM.YYYY') }}
+      </template>
+      <template v-if="column.key === 'totalAmount'">
+        {{ amount(record.totalAmount) }}
+      </template>
+      <template v-if="column.key === 'actions'">
+        <a-space>
+          <a-button
+            class="btn"
+            @click="viewPost(record.postId, selectedChannel)"
+          >
+            <template #icon>
+              <IconMessageTextSquare />
+            </template>
+          </a-button>
+          <a-button class="btn">
+            <template #icon>
+              <IconEye />
+            </template>
+          </a-button>
+        </a-space>
+      </template>
+    </template>
+  </a-table>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.table-custom-class {
+  height: calc(100% - 40px);
+}
+</style>

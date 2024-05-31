@@ -15,6 +15,7 @@ import IconUsers from '@/components/icons/IconUsers.vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import IconMonitor from '@/components/icons/IconMonitor.vue'
 import IconMessageTextSquare from '@/components/icons/IconMessageTextSquare.vue'
+import ScrollbarComponent from '@/components/ScrollbarComponent.vue'
 
 const { collapsed } = defineProps({
   collapsed: {
@@ -100,21 +101,25 @@ const menuList = shallowRef([
         </template>
       </a-row>
       <user-component :avatar="true" class="mb-4" />
-      <a-menu
-        @click="setCollapse"
-        v-model="selected"
-        :selectedKeys="[activeLink]"
-        mode="inline"
-      >
-        <a-menu-item v-for="menu in menuList" :key="menu.path">
-          <template #icon>
-            <component :is="menu.icon" />
-          </template>
-          {{ $t(menu.name) }}
-        </a-menu-item>
-      </a-menu>
+      <scrollbar-component height="calc(100vh - 350px)">
+        <template #content>
+          <a-menu
+            @click="setCollapse"
+            v-model="selected"
+            :selectedKeys="[activeLink]"
+            mode="inline"
+          >
+            <a-menu-item v-for="menu in menuList" :key="menu.path">
+              <template #icon>
+                <component :is="menu.icon" />
+              </template>
+              {{ $t(menu.name) }}
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </scrollbar-component>
     </div>
-    <div class="aside-footer m-3">
+    <div class="aside-footer m-3 pt-4">
       <ul class="aside-footer-list px-2" :class="[{ collapse: collapsed }]">
         <li>
           <a-tooltip :title="$t('Help')">
