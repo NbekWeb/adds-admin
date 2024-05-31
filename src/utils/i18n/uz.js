@@ -40,6 +40,7 @@ const uz = {
   VALUE_MUST_BE_GREATER_THEN_ZERO: "Qiymat noldan katta bo'lishi kerak",
   // titles
   ADD_NEW_CONFIGURATION: "Yangi ta'rif qo'shish",
+  ADD_NEW_TIME: "Yangi vaqt qo'shish",
   ADD_NEW_TIME_CONFIGURATION: "Yangi vaqt qo'shish",
   BOARD_CONFIGURATIONS: 'Configurations',
   BOARD_TIME_CONFIGURATIONS: 'Time configurations',

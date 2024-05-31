@@ -47,9 +47,18 @@ body {
 .flex-column {
   flex-direction: column !important;
 }
+.flex-grow {
+  flex-grow: 1;
+}
+
 .align-center {
   align-items: center !important;
 }
+
+.align-end{
+  align-items: end;
+}
+
 .justify-end {
   justify-content: flex-end !important;
 }
@@ -94,7 +103,7 @@ a {
 .text-center {
   text-align: center;
 }
-.pointer{
+.pointer {
   cursor: pointer;
 }
 
@@ -114,7 +123,7 @@ a {
       .ant-table {
         height: 100%;
         overflow: auto;
-        .ant-table-body{
+        .ant-table-body {
           &::-webkit-scrollbar {
             width: 5px;
             height: 5px;
@@ -138,7 +147,6 @@ a {
             background: $primary;
           }
         }
-
       }
       .ant-pagination {
         margin-bottom: 0;

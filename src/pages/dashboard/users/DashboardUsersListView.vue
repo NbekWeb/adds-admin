@@ -102,7 +102,7 @@ function handleChangeUserStatus(id, status) {
     userPinia.getAllUsers(currentPage.value - 1)
   })
 }
-
+const usersA = ref()
 onMounted(() => {
   userPinia.getAllUsers(currentPage.value - 1)
 })
@@ -130,7 +130,7 @@ onMounted(() => {
       :pagination="totalPages > 1 ? pagination : false"
       row-key="username"
       size="middle"
-      :scroll="{ y: 'calc(100vh - 250px)', x: 'max-content' }"
+      :scroll="{ y: 'calc(100vh - 300px)', x: 'max-content' }"
       class="table-custom-class"
     >
       <template #headerCell="{ column }">
