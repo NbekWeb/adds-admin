@@ -143,6 +143,6 @@ onMounted(() => {
 }
 
 .kiosk-duration-drawer .ant-drawer-content-wrapper {
-  width: 50% !important;
+  width: 350px !important;
 }
 </style>

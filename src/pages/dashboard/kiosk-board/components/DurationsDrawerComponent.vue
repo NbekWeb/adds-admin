@@ -39,45 +39,36 @@ onMounted(() => {
 
 <template>
   <loader-component loading-url="duration/get">
-    <div class="mt-2">
-      <a-card size="small" class="flex align-center duration-drawer">
-        <p class="m-0 mr-3">
-          {{ $t('KIOSK_VIDEO_MAX') }} -
-          <span v-show="!open">{{ duration?.limitSeconds }}</span>
-          <a-input-number
-            v-show="open"
-            size="small"
-            :min="1"
-            v-model:value="duration.limitSeconds"
-          />
-        </p>
-      </a-card>
+    <a-form layout="vertical" class="mt-2">
+      <a-form-item
+        :label="$t('KIOSK_VIDEO_MAX')"
+      >
+        <a-input-number
+          :min="1"
+          :disabled="!open"
+          v-model:value="duration.limitSeconds"
+        />
+      </a-form-item>
 
-      <a-card size="small" class="flex align-center duration-drawer mt-2">
-        <p class="m-0 mr-3">
-          {{ $t('KIOSK_IMG_MAX') }} -
-          <span v-show="!open">{{ duration?.defaultImageSeconds }}</span>
-          <a-input-number
-            v-show="open"
-            size="small"
-            :min="1"
-            v-model:value="duration.defaultImageSeconds"
-          />
-        </p>
-      </a-card>
+      <a-form-item
+        :label="$t('KIOSK_IMG_MAX')"
+      >
+        <a-input-number
+          :min="1"
+          :disabled="!open"
+          v-model:value="duration.defaultImageSeconds"
+        />
+      </a-form-item>
 
-      <a-card size="small" class="flex align-center duration-drawer mt-2">
-        <p class="m-0 mr-3">
-          {{ $t('KIOSK_TEXT_MAX') }} -
-          <span v-show="!open">{{ duration?.defaultTextSeconds }}</span>
-          <a-input-number
-            v-show="open"
-            size="small"
-            :min="1"
-            v-model:value="duration.defaultTextSeconds"
-          />
-        </p>
-      </a-card>
+      <a-form-item
+        :label="$t('KIOSK_TEXT_MAX')"
+      >
+        <a-input-number
+          :min="1"
+          :disabled="!open"
+          v-model:value="duration.defaultTextSeconds"
+        />
+      </a-form-item>
 
       <a-space class="mt-4">
         <a-space v-show="!open">
@@ -104,7 +95,8 @@ onMounted(() => {
           </a-button>
         </a-space>
       </a-space>
-    </div>
+    </a-form>
   </loader-component>
 </template>
+
 <style lang="scss" scoped></style>

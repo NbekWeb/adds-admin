@@ -141,6 +141,13 @@ const uz = {
   KIOSK_VIDEO_MAX: 'Videoning maksimal uzunligi ',
   KIOSK_TIME: 'Kiosk vaqtlari',
   KIOSK_TIME_CHANGE: "Kiosk vaqtlarini o'zgartirish",
+  MONDAY: 'Dushanba',
+  TUESDAY: 'Seshanba',
+  WEDNESDAY: 'Chorshanba',
+  THURSDAY: 'Payshanba',
+  FRIDAY: 'Juma',
+  SATURDAY: 'Shanba',
+  SUNDAY: 'Yakshanba',
   // statuses
   EXPIRED: "Muddati o'tib ketgan",
   FAILED: 'Muvaffaqiyatsiz',

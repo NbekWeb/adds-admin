@@ -95,37 +95,45 @@ const rules = ref({
   ]
 })
 
+const orderWeeks = ref(0)
+
 const optionsWeek = ref([
   {
     value: 'MONDAY',
-    label: 'Dushanba'
+    label: t('MONDAY'),
+    disabled: false
   },
   {
     value: 'TUESDAY',
-    label: 'Seshanba'
+    label: t('TUESDAY'),
+    disabled: false
   },
   {
     value: 'WEDNESDAY',
-    label: 'Chorshanba'
+    label: t('WEDNESDAY'),
+    disabled: false
   },
   {
     value: 'THURSDAY',
-    label: 'Payshanba'
+    label: t('THURSDAY'),
+    disabled: false
   },
   {
     value: 'FRIDAY',
-    label: 'Juma'
+    label: t('FRIDAY'),
+    disabled: false
   },
   {
     value: 'SATURDAY',
-    label: 'Shanba'
+    label: t('SATURDAY'),
+    disabled: false
   },
   {
     value: 'SUNDAY',
-    label: 'Yakshanba'
+    label: t('SUNDAY'),
+    disabled: false
   }
 ])
-
 const { resetFields, validate, validateInfos } = useForm(formStates, rules)
 const findPlaceByLatLon = (lat, lon, callback) => {
   // Find place by Lat and Lon
@@ -180,10 +188,7 @@ const findPlaceByName = (text) => {
       })
     })
     .catch((error) => {
-      coreStore.setToast({
-        locale: error?.response?.message,
-        type: 'error'
-      })
+      coreStore.switchStatus(error)
     })
     .finally(() => {
       map.value.searching = false
@@ -191,7 +196,6 @@ const findPlaceByName = (text) => {
 }
 
 const searchingMap = debounce((text) => {
-  // Each 3 ms Searching Place by text
   findPlaceByName(text)
 }, 300)
 
@@ -237,9 +241,13 @@ const addTimConfig = () => {
     endTime: selectedTime.value.time[1],
     dayOfWeek: selectedTime.value.dayOfWeek
   })
-  optionsWeek.value = optionsWeek.value.filter(
-    (week) => week.value != selectedTime.value.dayOfWeek
-  )
+  optionsWeek.value = optionsWeek.value.map((week) => {
+    if (week.value === selectedTime.value.dayOfWeek) {
+      week.disabled = true
+    }
+    return week
+  })
+  orderWeeks.value++
   resetTimeConfig()
 }
 
@@ -283,7 +291,7 @@ onMounted(() => {
                   >
                     <a-input
                       v-model:value="formStates.name"
-                      placeholder="Kiosk-Board nomi"
+                      :placeholder="$t('KIOSK_BOARD_NAME')"
                     />
                   </a-form-item>
                 </a-col>
@@ -329,7 +337,7 @@ onMounted(() => {
                     <a-textarea
                       v-model:value="formStates.description"
                       :placeholder="$t('DESCRIPTION')"
-                      style="height: 150px"
+                      style="height: 160px"
                       :maxlength="255"
                     />
                   </a-form-item>
@@ -379,103 +387,110 @@ onMounted(() => {
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row>
-          <a-col :span="24" class="flex" v-if="optionsWeek.length > 0">
-            <a-form-item
-              v-bind="validateInfos.description"
-              :label="$t('BOARD_TIME_CONFIGURATIONS')"
+        <a-form-item
+          v-bind="validateInfos.description"
+          :label="$t('BOARD_TIME_CONFIGURATIONS')"
+          class="mr-3"
+        >
+          <a-row :gutter="[16, 16]">
+            <template
+              v-if="
+                formStates.timeConfigurations &&
+                formStates.timeConfigurations.length > 0
+              "
             >
-              <a-button
-                @click="visibleDrawer.add('time/form')"
-                class="btn w-full"
+              <a-col
+                v-for="(
+                  timeConfiguration, index
+                ) in formStates.timeConfigurations"
+                :key="index"
+                :span="4"
               >
-                <IconPlus />
-                {{ $t('ADD_NEW_TIME') }}
-              </a-button>
-            </a-form-item>
-          </a-col>
-          <a-col
-            :span="24"
-            class="flex wrap mb-4"
-            v-if="
-              formStates.timeConfigurations &&
-              formStates.timeConfigurations.length > 0
-            "
-          >
-            <a-card
-              size="small"
-              v-for="(
-                timeConfiguration, index
-              ) in formStates.timeConfigurations"
-              :key="index"
-            >
-              <strong class="mr-2">{{ timeConfiguration.dayOfWeek }}</strong>
-              {{ timeConfiguration.startTime }} -
-              {{ timeConfiguration.endTime }}
-            </a-card>
-          </a-col>
-          <a-modal
-            centered
-            width="450px"
-            :title="$t('ADD_NEW_TIME')"
-            destroy-on-close
-            :footer="null"
-            :open="visibleDrawer.has('time/form')"
-            @cancel="visibleDrawer.delete('time/form')"
-          >
-            <a-form-item
-              :label="$t('LIVE_TIME')"
-              v-bind="validateInfos.timeConfigurations"
-            >
-              <a-time-range-picker
-                v-model:value="selectedTime.time"
-                valueFormat="HH:mm"
-                format="HH:mm"
-                class="w-full"
-                :placeholder="['boshlanishi', 'tugashi']"
-              />
-            </a-form-item>
+                <a-card size="small">
+                  <strong class="pr-2">{{
+                    $t(timeConfiguration.dayOfWeek)
+                  }}</strong>
+                  {{ timeConfiguration.startTime }} -
+                  {{ timeConfiguration.endTime }}
+                </a-card>
+              </a-col>
+            </template>
 
-            <a-form-item
-              :label="$t('WEEK_SELECT')"
-              v-bind="validateInfos.timeConfigurations"
+            <template v-if="orderWeeks < 7">
+              <a-col :span="4">
+                <a-button
+                  @click="visibleDrawer.add('time/form')"
+                  class="btn h-full w-full"
+                >
+                  <IconPlus />
+                  {{ $t('ADD_NEW_TIME') }}
+                </a-button>
+              </a-col>
+            </template>
+            <a-modal
+              centered
+              width="450px"
+              :title="$t('ADD_NEW_TIME')"
+              destroy-on-close
+              :footer="null"
+              :open="visibleDrawer.has('time/form')"
+              @cancel="visibleDrawer.delete('time/form')"
             >
-              <a-select
-                placeholder="Hafta kuni"
-                class="w-full"
-                :options="optionsWeek"
-                v-model:value="selectedTime.dayOfWeek"
+              <a-form-item
+                :label="$t('LIVE_TIME')"
+                v-bind="validateInfos.timeConfigurations"
               >
-              </a-select>
-            </a-form-item>
-            <div class="flex justify-between">
-              <a-button @click="resetTimeConfig">
-                {{ $t('CANCEL') }}
-              </a-button>
+                <a-time-range-picker
+                  v-model:value="selectedTime.time"
+                  valueFormat="HH:mm"
+                  format="HH:mm"
+                  class="w-full"
+                  :placeholder="[t('START_TIME'), t('END_TIME')]"
+                />
+              </a-form-item>
 
-              <a-button
-                type="primary"
-                @click="addTimConfig"
-                :disabled="
-                  !(selectedTime.time.length > 0 && selectedTime.dayOfWeek)
-                "
+              <a-form-item
+                :label="$t('WEEK_SELECT')"
+                v-bind="validateInfos.timeConfigurations"
               >
-                {{ $t('SAVE') }}
-              </a-button>
-            </div>
-          </a-modal>
-          <a-row :gutter="10" class="flex justify-end w-full pb-4">
-            <a-col>
-              <a-button @click="$router.back()">
-                {{ $t('BACK') }}
-              </a-button>
-            </a-col>
-            <a-col>
-              <a-button type="primary" @click="submitForm">
-                {{ $t('SAVE') }}
-              </a-button>
-            </a-col>
+                <a-select
+                  :placeholder="t('WEEK_SELECT')"
+                  class="w-full"
+                  :options="optionsWeek"
+                  v-model:value="selectedTime.dayOfWeek"
+                >
+                </a-select>
+              </a-form-item>
+              <div class="flex justify-between">
+                <a-button @click="resetTimeConfig">
+                  {{ $t('CANCEL') }}
+                </a-button>
+
+                <a-button
+                  type="primary"
+                  @click="addTimConfig"
+                  :disabled="
+                    !(selectedTime.time.length > 0 && selectedTime.dayOfWeek)
+                  "
+                >
+                  {{ $t('SAVE') }}
+                </a-button>
+              </div>
+            </a-modal>
           </a-row>
+        </a-form-item>
+
+        <a-row :gutter="10" class="flex justify-end w-full pb-4">
+          <a-col>
+            <a-button @click="$router.back()">
+              {{ $t('BACK') }}
+            </a-button>
+          </a-col>
+          <a-col>
+            <a-button type="primary" @click="submitForm">
+              {{ $t('SAVE') }}
+            </a-button>
+          </a-col>
         </a-row>
       </a-form>
     </template>

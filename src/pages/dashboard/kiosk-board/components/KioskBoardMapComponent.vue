@@ -57,7 +57,7 @@ const click = (e) => {
     background-color: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(4px);
     padding: 10px 1rem;
-    z-index: 99999;
+    z-index: 1000;
   }
 }
 
