@@ -133,6 +133,7 @@ const uz = {
   KIOSK_BOARD_ADDRESS: 'Kiosk Manzili',
   KIOSK_BOARD_NAME: 'Kiosk Nomi',
   KIOSK_BOARD_PRICE: 'Kiosk Narxi',
+  KIOSK_BOARD_SEARCH: 'Kioskni izlash...',
   FIND_KIOSK_BOARD: 'Kiosk Manzili',
   WEEK_SELECT: 'Hafta kunini tanlang',
   KIOSK_DURATIONS: 'Kiosk Board Vaqtlari',

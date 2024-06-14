@@ -77,7 +77,7 @@ onMounted(() => {
     <template #actions>
       <a-space>
         <a-input
-          placeholder="Kioskni izlash..."
+          :placeholder="$t('KIOSK_BOARD_SEARCH')"
           v-model:value="search"
           allow-clear
           @keydown="handleSearch"
@@ -104,7 +104,7 @@ onMounted(() => {
         <a-select
           @change="handleChangeFilter"
           v-model:value="status"
-          placeholder="Status"
+          :placeholder="$t('STATUS')"
           class="select"
           allow-clear
         >
